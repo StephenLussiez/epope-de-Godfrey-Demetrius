@@ -1,0 +1,33 @@
+﻿  DrawableSprite.ixx
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(1,1): error C3378: une déclaration peut être exportée uniquement à partir d'une unité d'interface de module
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(1,29): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(1,15): error C2146: erreur de syntaxe : absence de ';' avant l'identificateur 'DrawableSprite'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(4,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(4,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(4,1): error C2086: 'int import' : redéfinition
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,1): message : voir la déclaration de 'import'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(4,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(5,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(5,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(5,1): error C2086: 'int import' : redéfinition
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,1): message : voir la déclaration de 'import'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(5,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(6,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(6,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(6,1): error C2086: 'int import' : redéfinition
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,1): message : voir la déclaration de 'import'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(6,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(8,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(8,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(8,1): error C2086: 'int import' : redéfinition
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,1): message : voir la déclaration de 'import'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(8,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(9,8): error C2143: erreur de syntaxe : absence de ';' avant '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(9,8): error C4430: spécificateur de type manquant - int est pris en compte par défaut. Remarque : C++ ne prend pas en charge int par défaut
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(9,1): error C2086: 'int import' : redéfinition
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(3,1): message : voir la déclaration de 'import'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(9,8): error C2059: erreur de syntaxe : '<'
+D:\C++\epope-de-Godfrey-Demetrius\epope-de-Godfrey-Demetrius\Module\DrawableSprite.ixx(12,1): error C3378: une déclaration peut être exportée uniquement à partir d'une unité d'interface de module
