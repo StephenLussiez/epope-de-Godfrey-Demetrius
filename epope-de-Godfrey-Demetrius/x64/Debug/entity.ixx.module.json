@@ -1,0 +1,13 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "d:\\c++\\epope-de-godfrey-demetrius\\epope-de-godfrey-demetrius\\entity.ixx",
+        "ProvidedModule": "Entity",
+        "ImportedModules": [
+            "DrawableSprite"
+        ],
+        "ImportedHeaderUnits": [
+            "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.33.31629\\include\\string"
+        ]
+    }
+}

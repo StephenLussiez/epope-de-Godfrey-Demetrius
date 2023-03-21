@@ -6,7 +6,7 @@ import <SFML/Graphics/Sprite.hpp>;
 import <SFML/Graphics/Texture.hpp>;
 
 import <format>;
-#include <memory>
+import <memory>;
 import <string>;
 
 
@@ -20,6 +20,11 @@ namespace EGD
          * \param file_path correspond au chemin vers le fichier qui sera utilisé
          */
         explicit DrawableSprite(const std::string& file_path);
+        DrawableSprite() = default;
+
+        DrawableSprite(const DrawableSprite& other);
+        //DrawableSprite(const DrawableSprite& _Sprite);
+
         /**
          * \brief crée un image à partir d'une texture chargé dans la mémoire
          * \param texture est un share pointer pour chaque texture utilisé 
@@ -91,6 +96,12 @@ namespace EGD
     {
         m_texture = std::make_shared<sf::Texture>();
         m_texture->loadFromFile(file_path);
+        m_sprite = std::make_unique<sf::Sprite>(*m_texture);
+    }
+
+    DrawableSprite::DrawableSprite(const DrawableSprite& other)
+        : m_texture(other.m_texture)
+    {
         m_sprite = std::make_unique<sf::Sprite>(*m_texture);
     }
 
