@@ -27,5 +27,8 @@
     <ClCompile Include="Entity.ixx">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Player.ixx">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

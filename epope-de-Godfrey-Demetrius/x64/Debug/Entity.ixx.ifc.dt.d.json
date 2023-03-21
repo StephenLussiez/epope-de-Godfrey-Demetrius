@@ -4,7 +4,33 @@
         "Source": "d:\\c++\\epope-de-godfrey-demetrius\\epope-de-godfrey-demetrius\\entity.ixx",
         "ProvidedModule": "Entity",
         "Includes": [],
-        "ImportedModules": [],
-        "ImportedHeaderUnits": []
+        "ImportedModules": [
+            {
+                "Name": "DrawableSprite",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\DrawableSprite.ixx.ifc.dt"
+            }
+        ],
+        "ImportedHeaderUnits": [
+            {
+                "Header": "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.33.31629\\include\\string",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\string_605BF43392FFBE22.ifc.dt"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\drawable.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Drawable.hpp_2AA84919B28B9EFE.ifc.dt"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\texture.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Texture.hpp_42C6B129245EF47F.ifc.dt"
+            },
+            {
+                "Header": "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.33.31629\\include\\format",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\format_F2098B8023ABA020.ifc.dt"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\sprite.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Sprite.hpp_FE5B35FF634821E1.ifc.dt"
+            }
+        ]
     }
 }

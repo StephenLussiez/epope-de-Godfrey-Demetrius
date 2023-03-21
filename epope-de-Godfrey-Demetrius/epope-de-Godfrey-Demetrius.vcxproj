@@ -136,6 +136,7 @@
     <ClCompile Include="Entity.ixx" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Module\DrawableSprite.ixx" />
+    <ClCompile Include="Player.ixx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
