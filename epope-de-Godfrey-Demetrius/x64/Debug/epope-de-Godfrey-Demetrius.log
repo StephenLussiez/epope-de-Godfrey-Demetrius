@@ -1,22 +1,5 @@
 ﻿  Analyse des sources à la recherche des dépendances de module...
-  DrawableSprite.ixx
   Entity.ixx
-  RenderTarget.hpp
-  Drawable.hpp
-  string
-  Texture.hpp
-  format
-  Sprite.hpp
-  memory
   Compilation...
-  Drawable.hpp
-  Sprite.hpp
-  memory
-  string
-  RenderTarget.hpp
-  format
-  Texture.hpp
-  DrawableSprite.ixx
   Entity.ixx
-  main.cpp
   epope-de-Godfrey-Demetrius.vcxproj -> D:\C++\epope-de-Godfrey-Demetrius\x64\Debug\epope-de-Godfrey-Demetrius.exe

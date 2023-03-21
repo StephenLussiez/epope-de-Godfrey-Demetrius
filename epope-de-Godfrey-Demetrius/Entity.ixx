@@ -14,14 +14,39 @@ namespace EGD
               speed(speed),
               sprite(sprite) {}
 
-        void setName();
-        void getName();
-        void setSpeed();
-        void getSpeed();
+        void setName(std::string entityName);
+        std::string getName();
+        void setSpeed(float entitySpeed);
+        float getSpeed();
 
     private:
         std::string Name;
         float speed = 0;
         DrawableSprite sprite;
     };
+}
+
+module: private;
+
+namespace EGD
+{
+    void Entity::setName(std::string entityName)
+    {
+        Name = entityName;
+    }
+
+    std::string Entity::getName()
+    {
+        return Name;
+    }
+
+    void Entity::setSpeed(float entitySpeed)
+    {
+        speed = entitySpeed;
+    }
+
+    float Entity::getSpeed()
+    {
+        return speed;
+    }
 }
