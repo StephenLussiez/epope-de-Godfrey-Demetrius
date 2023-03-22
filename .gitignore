@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+vcpkg_installed/
+
+*.idb
+*.list
+*.log
+*.tlog
+*.pdb
+*.db
+*.suo
+*vsidx
+*.user
+
+.vs
