@@ -13,7 +13,6 @@ int GameEngine::Gameloop()
 	sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
 	sf::Event event;
 	
-	std::cout << "fermeture" << std::endl;
 	while (window->isOpen()) {
 		if (window->pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
