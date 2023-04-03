@@ -1,0 +1,10 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\c++\\epope-de-godfrey-demetrius\\epope-de-godfrey-demetrius\\module\\drawablesprite.ixx",
+        "ProvidedModule": "DrawableSprite",
+        "Includes": [],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

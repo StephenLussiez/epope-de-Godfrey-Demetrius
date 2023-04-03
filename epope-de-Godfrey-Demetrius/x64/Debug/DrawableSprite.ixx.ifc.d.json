@@ -1,0 +1,39 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\c++\\epope-de-godfrey-demetrius\\epope-de-godfrey-demetrius\\module\\drawablesprite.ixx",
+        "ProvidedModule": "DrawableSprite",
+        "Includes": [],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": [
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\drawable.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Drawable.hpp_HAXDZEUCFR03E1DU.ifc"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\rendertarget.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\RenderTarget.hpp_4IZITU40F06YNJU6.ifc"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\sprite.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Sprite.hpp_U13DLIDNL41VXNFG.ifc"
+            },
+            {
+                "Header": "d:\\c++\\epope-de-godfrey-demetrius\\vcpkg_installed\\x64-windows\\x64-windows\\include\\sfml\\graphics\\texture.hpp",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\Texture.hpp_9O3P13RKAWCEUS1X.ifc"
+            },
+            {
+                "Header": "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.33.31629\\include\\format",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\format_XCG77BDX3M9JFWVA.ifc"
+            },
+            {
+                "Header": "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.33.31629\\include\\memory",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\memory_0O2G1REUWGWXBZ1R.ifc"
+            },
+            {
+                "Header": "c:\\program files\\microsoft visual studio\\2022\\community\\vc\\tools\\msvc\\14.33.31629\\include\\string",
+                "BMI": "D:\\C++\\epope-de-Godfrey-Demetrius\\epope-de-Godfrey-Demetrius\\x64\\Debug\\string_ZP9SYEX95JB0YGGN.ifc"
+            }
+        ]
+    }
+}

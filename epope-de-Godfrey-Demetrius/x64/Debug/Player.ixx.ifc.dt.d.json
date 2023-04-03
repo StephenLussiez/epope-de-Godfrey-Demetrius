@@ -1,0 +1,10 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\c++\\epope-de-godfrey-demetrius\\epope-de-godfrey-demetrius\\player.ixx",
+        "ProvidedModule": "Player",
+        "Includes": [],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
