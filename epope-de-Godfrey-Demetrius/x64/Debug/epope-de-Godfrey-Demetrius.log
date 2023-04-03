@@ -1,8 +1,23 @@
 ﻿  Analyse des sources à la recherche des dépendances de module...
-  Entity.ixx
-  Player.ixx
+  EventHandler.ixx
+  IEvent.ixx
+  Mobs.ixx
+  RenderTarget.hpp
+  Drawable.hpp
+  Sprite.hpp
+  Texture.hpp
   Compilation...
+  Drawable.hpp
+  RenderTarget.hpp
+  IEvent.ixx
+  Sprite.hpp
+  Texture.hpp
+  EventHandler.ixx
+  DrawableSprite.ixx
   Entity.ixx
+  Mobs.ixx
   Player.ixx
   main.cpp
-  epope-de-Godfrey-Demetrius.vcxproj -> D:\C++\epope-de-Godfrey-Demetrius\x64\Debug\epope-de-Godfrey-Demetrius.exe
+main.obj : error LNK2019: symbole externe non résolu "public: __cdecl GameEngine::GameEngine(void)" (??0GameEngine@@QEAA@XZ) référencé dans la fonction main
+main.obj : error LNK2019: symbole externe non résolu "public: int __cdecl GameEngine::Gameloop(void)" (?Gameloop@GameEngine@@QEAAHXZ) référencé dans la fonction main
+D:\C++\epope-de-Godfrey-Demetrius\x64\Debug\epope-de-Godfrey-Demetrius.exe : fatal error LNK1120: 2 externes non résolus

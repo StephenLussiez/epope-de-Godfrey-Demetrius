@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Entity.ixx" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="managers\EventHandler.ixx" />
     <ClCompile Include="managers\IEvent.ixx" />
     <ClCompile Include="Mobs.ixx" />
     <ClCompile Include="Module\DrawableSprite.ixx" />
