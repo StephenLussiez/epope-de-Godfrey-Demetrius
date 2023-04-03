@@ -1,5 +1,8 @@
 ﻿  Analyse des sources à la recherche des dépendances de module...
   Entity.ixx
+  Player.ixx
   Compilation...
   Entity.ixx
+  Player.ixx
+  main.cpp
   epope-de-Godfrey-Demetrius.vcxproj -> D:\C++\epope-de-Godfrey-Demetrius\x64\Debug\epope-de-Godfrey-Demetrius.exe
