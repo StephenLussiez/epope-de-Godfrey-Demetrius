@@ -9,7 +9,7 @@ import Entity;
 
 namespace EGD
 {
-    export class Player final : public sf::Drawable, public Entity
+    export class Player final : public Entity
     {
     public:
         void setRouage();

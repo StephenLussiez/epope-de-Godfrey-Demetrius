@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Entity.ixx" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mobs.ixx" />
     <ClCompile Include="Module\DrawableSprite.ixx" />
     <ClCompile Include="Player.ixx" />
   </ItemGroup>
