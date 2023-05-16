@@ -110,7 +110,7 @@ int GameEngine::Gameloop()
     
     // Chargement de la texture pour le personnage
     sf::Texture playerTexture;
-    if (!playerTexture.loadFromFile("src/Godfrey.png")) {
+    if (!playerTexture.loadFromFile("src/assets/Godfrey.png")) {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
     sf::Sprite playerSprite(playerTexture);
@@ -119,7 +119,7 @@ int GameEngine::Gameloop()
 
     // Chargement de la première carte
     sf::Texture carte1Texture;
-    if (!carte1Texture.loadFromFile("src/Carte1.png")) {
+    if (!carte1Texture.loadFromFile("src/assets/Carte1.png")) {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
     
@@ -130,7 +130,7 @@ int GameEngine::Gameloop()
     // Chargement de la deuxième carte
     sf::Texture carte2Texture;
     
-    if (!carte2Texture.loadFromFile("src/Carte3.png")) {
+    if (!carte2Texture.loadFromFile("src/assets/Carte3.png")) {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
     
@@ -140,7 +140,7 @@ int GameEngine::Gameloop()
 
     // Chargement de la première carte
     sf::Texture plateforme1Texture;
-    if (!plateforme1Texture.loadFromFile("src/plateforme1.png")) {
+    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png")) {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 

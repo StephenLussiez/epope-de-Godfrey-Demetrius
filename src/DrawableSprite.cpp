@@ -1,4 +1,4 @@
-#include "DrawableSprite.h"
+#include "headers/DrawableSprite.h"
 
 
 DrawableSprite::DrawableSprite(const std::string& file_path)
