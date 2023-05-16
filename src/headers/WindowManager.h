@@ -6,7 +6,7 @@ class WindowManager {
 	int m_width;
 	int m_height;
 	std::string m_name;
-	sf::RenderWindow* m_window;
+
 
 public:
 	static WindowManager* GetInstance();

@@ -55,7 +55,6 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
             jumpHeightRemaining = 0.0f;
         }
     }
-    
 }
 
 void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Sprite& carte1Sprite, sf::Sprite& carte2Sprite, sf::Sprite& plateforme1Sprite)
@@ -151,6 +150,7 @@ int GameEngine::Gameloop()
     sf::Time deltaTime = clock.restart();
     
     while (window->isOpen()) {
+
         GameInputs(window, playerSprite, deltaTime, plateforme1Sprite);
         GameDrawing(window, playerSprite,carte1Sprite, carte2Sprite, plateforme1Sprite);
         GamePhysics(playerSprite, deltaTime, plateforme1Sprite);
@@ -159,8 +159,6 @@ int GameEngine::Gameloop()
         std::cout << playerSprite.getPosition().y;*/
         
     }
-    
-    
     return 0;
 }
 

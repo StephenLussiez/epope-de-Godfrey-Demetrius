@@ -6,3 +6,4 @@ int main(void)
     newGame->Gameloop();
     return (0);
 }
+

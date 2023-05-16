@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 
 class GameEngine {
+private:
+	int scene;
 
 public:
 	GameEngine();
