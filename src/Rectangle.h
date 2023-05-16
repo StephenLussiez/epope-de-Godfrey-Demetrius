@@ -4,7 +4,7 @@
 class Rectangle
 {
 private:
-	sf::IntRect m_area;
+	sf::IntRect m_dimensions;
 	sf::Vector2f m_position;
 	sf::Color color;
 	sf::RectangleShape m_shape;
