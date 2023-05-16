@@ -1,4 +1,4 @@
-#include "managers/Entity.h"
+#include "headers/Entity.h"
 
 
 void Entity::setName(std::string entityName)
