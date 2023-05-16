@@ -4,10 +4,10 @@
 class Entity
 {
 public:
-    Entity(const ::std::string& name, float speed, const DrawableSprite& sprite)
-        : Name(name),
+    Entity(::std::string name, float speed, sf::Sprite sprite)
+        : Name(std::move(name)),
           speed(speed),
-          sprite(sprite) {}
+          sprite(std::move(sprite)) {}
 
     void setName(std::string entityName);
     std::string getName();
@@ -17,5 +17,5 @@ public:
 private:
     std::string Name;
     float speed = 0;
-    DrawableSprite sprite;
+    sf::Sprite sprite;
 };
