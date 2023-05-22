@@ -1,12 +1,12 @@
 #include "headers/GameEngine.h"
 #include <iostream>
+#include <SFML/Audio.hpp>// Inclure la bibliothèque SFML Audio
 #include "headers/WindowManager.h"
-#include "SFML/Audio.hpp"  // Inclure la bibliothèque SFML Audio
 
 GameEngine::GameEngine() {}
 
 void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time& deltaTime,
-                            float& parallaxOffset)
+                            float& limitTimeJump, bool& canPressLeft, bool& canPressRight, float& parallaxOffset)
 {
     sf::Event event;
 
@@ -25,34 +25,44 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
     static float jumpSpeed = 0.0f;
     static float jumpHeightRemaining = 0.0f;
     float deltaTimeSeconds = deltaTime.asSeconds();
+    float jumpAcceleration = -12.81f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && canPressLeft)
     {
         parallaxOffset = speed;
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        canPressRight = true;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && canPressRight)
     {
         parallaxOffset = -speed;
+        canPressLeft = true;
     } else
     {
         parallaxOffset = 0;
     }
 
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping && limitTimeJump <= 0.5f)
     {
         isJumping = true;
         jumpSpeed = 0.0f;
         jumpHeightRemaining = jumpHeight;
+        limitTimeJump += deltaTimeSeconds;
+    } else if (limitTimeJump > 1.0f && limitTimeJump < 2.0f)
+    {
+        limitTimeJump += deltaTimeSeconds;
+        isJumping = false;
+    } else if (limitTimeJump >= 2.0f)
+    {
+        limitTimeJump = 0.0f;
     }
 
     if (isJumping)
     {
-        float jumpAcceleration = -12.81f;
         jumpSpeed += jumpAcceleration;
         playerSprite.move(0, jumpSpeed * 200 * deltaTimeSeconds);
         jumpHeightRemaining -= jumpSpeed;
 
-        if (jumpHeightRemaining >= -2.0f)
+        if (isJumping)
         {
             isJumping = false;
             jumpSpeed = 0.0f;
@@ -71,7 +81,8 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
                              sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                              sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
                              sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
-                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite,
+                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& enemy2Sprite,
+                             sf::Sprite& enemy3Sprite, sf::Sprite& finishSprite,
                              float& parallaxOffset)
 {
     // Appliquer le décalage de parallaxe aux positions des cartes
@@ -98,6 +109,8 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
     obstacle1Sprite.move((parallaxOffset * 0.1f), 0);
     obstacle2Sprite.move((parallaxOffset * 0.1f), 0);
     enemy1Sprite.move((parallaxOffset * 0.1f), 0);
+    enemy2Sprite.move((parallaxOffset * 0.1f), 0);
+    enemy3Sprite.move((parallaxOffset * 0.1f), 0);
     finishSprite.move((parallaxOffset * 0.1f), 0);
 
     window->clear();
@@ -125,6 +138,8 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
     window->draw(obstacle1Sprite);
     window->draw(obstacle2Sprite);
     window->draw(enemy1Sprite);
+    window->draw(enemy2Sprite);
+    window->draw(enemy3Sprite);
     window->draw(finishSprite);
     window->display();
 }
@@ -138,6 +153,33 @@ bool GameEngine::CheckCollision(const sf::Sprite& sprite1, const sf::Sprite& spr
     return bounds1.intersects(bounds2);
 }
 
+bool GameEngine::IsPlayerAboveEnemy(const sf::Sprite& playerSprite, const sf::Sprite& enemySprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect enemyBounds = enemySprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerBounds.top + playerBounds.height < enemyBounds.top + 5;
+}
+
+bool GameEngine::IsPlayerOnTheRight(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerSprite.getPosition().x + playerBounds.width > sprite.getPosition().x + spriteBounds.width + 5;
+}
+
+bool GameEngine::IsPlayerOnTheLeft(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerSprite.getPosition().x + playerBounds.width < sprite.getPosition().x + 10;
+}
+
 void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time deltaTime,
                              sf::Sprite& plateformSprite1,
                              sf::Sprite& plateforme2Sprite,
@@ -145,7 +187,10 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite,
                              sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                              sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
                              sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
-                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite)
+                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& enemy2Sprite,
+                             sf::Sprite& enemy3Sprite, sf::Sprite& finishSprite, float& limitTimeJump,
+                             bool& canPressLeft, bool& canPressRight,
+                             float& parallaxOffset)
 {
     float speed = 0.0f;
     const float gravity = 3.81f;
@@ -162,15 +207,79 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite,
         CheckCollision(playerSprite, obstacle1Sprite) || CheckCollision(playerSprite, obstacle2Sprite))
     {
         playerSprite.move(0, 0);
+        limitTimeJump = 0.0f;
         //enemySprite.move(0, speed);
     } else
     {
         playerSprite.move(0, (speed + speed * deltaTimeSeconds));
     }
 
+
+    if (CheckCollision(playerSprite, obstacle1Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, obstacle1Sprite))
+        {
+            canPressLeft = true;
+            canPressRight = true;
+        } else if (IsPlayerOnTheRight(playerSprite, obstacle1Sprite))
+        {
+            canPressLeft = false;
+        } else if (IsPlayerOnTheLeft(playerSprite, obstacle1Sprite))
+        {
+            canPressRight = false;
+        }
+    }
+
+    if (CheckCollision(playerSprite, obstacle2Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, obstacle2Sprite))
+        {
+            canPressLeft = true;
+            canPressRight = true;
+        } else if (IsPlayerOnTheRight(playerSprite, obstacle2Sprite))
+        {
+            canPressLeft = false;
+        } else if (IsPlayerOnTheLeft(playerSprite, obstacle2Sprite))
+        {
+            canPressRight = false;
+        }
+    }
+
+
+    // Vérification de la collision avec les ennemis
     if (CheckCollision(playerSprite, enemy1Sprite))
     {
-        std::cout << "t'es mort ! t'es mort ! t'es mort !";
+        if (IsPlayerAboveEnemy(playerSprite, enemy1Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy1Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+        }
+    } else if (CheckCollision(playerSprite, enemy2Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, enemy2Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy2Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+        }
+    } else if (CheckCollision(playerSprite, enemy3Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, enemy3Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy3Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+        }
     }
 
     if (CheckCollision(playerSprite, finishSprite))
@@ -186,6 +295,9 @@ int GameEngine::Gameloop()
     sf::Clock clock;
     WindowManager* windowBox = new WindowManager();
     sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
+    float limitTimeJump = 0.0f;
+    bool canPressLeft = true;
+    bool canPressRight = true;
 
     // Chargement de la texture pour le personnage
     sf::Texture playerTexture;
@@ -493,6 +605,18 @@ int GameEngine::Gameloop()
                                 800);
     enemy2Sprite.setPosition(enemy2Position);
 
+    // Chargement d'un ennemi
+    sf::Texture enemy3Texture;
+    if (!enemy3Texture.loadFromFile("src/assets/monsterIdle.png"))
+    {
+        // Gérer l'erreur si la texture ne peut pas être chargée
+    }
+
+    sf::Sprite enemy3Sprite(enemy3Texture);
+    sf::Vector2f enemy3Position(plateforme9Sprite.getPosition().x + (plateforme9Sprite.getGlobalBounds().width + 50),
+                                800);
+    enemy3Sprite.setPosition(enemy3Position);
+
     // Chargement de la zone de fin
     sf::Texture finishTexture;
     if (!finishTexture.loadFromFile("src/assets/finish.png"))
@@ -508,33 +632,31 @@ int GameEngine::Gameloop()
 
     float parallaxOffset = 0.0f;
 
-    // Chargement de la musique
-    sf::Music music;
-    if (!music.openFromFile("src/assets/EpicMusic.ogg")) { }
+    sf::SoundBuffer buffer;
 
-    // Réglages de la musique
-    music.setVolume(50); // Définir le volume (0-100)
-    music.setLoop(true); // Définir la musique en mode boucle
+    if (!buffer.loadFromFile("src/EpicMusic.ogg")) { }
 
-    // Lancer la musique
-    music.play();
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.setVolume(100.0f);
+    sound.play();
+
 
     sf::Time deltaTime = clock.restart();
 
     while (window->isOpen())
     {
-        GameInputs(window, playerSprite, deltaTime, parallaxOffset);
         GamePhysics(window, playerSprite, deltaTime, plateforme1Sprite,
                     plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
                     plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
-                    obstacle2Sprite, enemy1Sprite,
-                    finishSprite);
-
+                    obstacle2Sprite, enemy1Sprite, enemy2Sprite, enemy3Sprite,
+                    finishSprite, limitTimeJump, canPressLeft, canPressRight, parallaxOffset);
+        GameInputs(window, playerSprite, deltaTime, limitTimeJump, canPressLeft, canPressRight, parallaxOffset);
         GameDrawing(window, playerSprite, carte1Sprite, carte2Sprite, carte3Sprite, carte4Sprite, carte5Sprite,
                     carte6Sprite, carte7Sprite, carte8Sprite, carte9Sprite, carte10Sprite, plateforme1Sprite,
                     plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
                     plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
-                    obstacle2Sprite, enemy1Sprite,
+                    obstacle2Sprite, enemy1Sprite, enemy2Sprite, enemy3Sprite,
                     finishSprite,
                     parallaxOffset);
 
