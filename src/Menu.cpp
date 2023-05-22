@@ -1,6 +1,1 @@
-#include "Menu.h"
-
-int Menu::init()
-{
-
-}
+#include "headers/Menu.h"

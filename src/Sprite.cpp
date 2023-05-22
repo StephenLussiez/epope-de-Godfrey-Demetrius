@@ -62,11 +62,6 @@ Sprite::Sprite(std::string path)
 	set_Texture(path);
 }
 
-Sprite::Sprite(std::string path)
-{
-	set_Texture(path);
-}
-
 Sprite::Sprite(std::string path, sf::IntRect area)
 {
 	set_Texture(path, area);
