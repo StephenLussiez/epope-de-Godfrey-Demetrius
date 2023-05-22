@@ -5,7 +5,7 @@
 
 GameEngine::GameEngine() {}
 
-void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time& deltaTime,
+void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::Time& deltaTime,
                             float& parallaxOffset)
 {
     sf::Event event;
@@ -37,7 +37,6 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
         parallaxOffset = 0;
     }
 
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping)
     {
         isJumping = true;
@@ -49,7 +48,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
     {
         float jumpAcceleration = -12.81f;
         jumpSpeed += jumpAcceleration;
-        playerSprite.move(0, jumpSpeed * 200 * deltaTimeSeconds);
+        playerSprite->Move(0, jumpSpeed * 200 * deltaTimeSeconds);
         jumpHeightRemaining -= jumpSpeed;
 
         if (jumpHeightRemaining >= -2.0f)
@@ -61,125 +60,172 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
     }
 }
 
-void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Sprite& carte1Sprite,
-                             sf::Sprite& carte2Sprite, sf::Sprite& carte3Sprite,
-                             sf::Sprite& carte4Sprite, sf::Sprite& carte5Sprite,
-                             sf::Sprite& carte6Sprite, sf::Sprite& carte7Sprite,
-                             sf::Sprite& carte8Sprite, sf::Sprite& carte9Sprite,
-                             sf::Sprite& carte10Sprite, sf::Sprite& plateforme1Sprite, sf::Sprite& plateforme2Sprite,
-                             sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
-                             sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
-                             sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
-                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite,
-                             float& parallaxOffset)
+void GameEngine::GameDrawing(sf::RenderWindow* window, std::vector<Sprite*> cartes, std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies, Sprite* finishSprite,
+                                float& parallaxOffset)
 {
     // Appliquer le décalage de parallaxe aux positions des cartes
-    carte1Sprite.move((parallaxOffset * 0.05f), 0);
-    carte2Sprite.move((parallaxOffset * 0.05f), 0);
-    carte3Sprite.move((parallaxOffset * 0.05f), 0);
-    carte4Sprite.move((parallaxOffset * 0.05f), 0);
-    carte5Sprite.move((parallaxOffset * 0.05f), 0);
-    carte6Sprite.move((parallaxOffset * 0.05f), 0);
-    carte7Sprite.move((parallaxOffset * 0.05f), 0);
-    carte8Sprite.move((parallaxOffset * 0.05f), 0);
-    carte9Sprite.move((parallaxOffset * 0.05f), 0);
-    carte10Sprite.move((parallaxOffset * 0.05f), 0);
-    plateforme1Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme2Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme3Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme4Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme5Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme6Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme7Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme8Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme9Sprite.move((parallaxOffset * 0.1f), 0);
-    plateforme10Sprite.move((parallaxOffset * 0.1f), 0);
-    obstacle1Sprite.move((parallaxOffset * 0.1f), 0);
-    obstacle2Sprite.move((parallaxOffset * 0.1f), 0);
-    enemy1Sprite.move((parallaxOffset * 0.1f), 0);
-    finishSprite.move((parallaxOffset * 0.1f), 0);
+    for (Sprite* it : cartes) {
+        it->Move((parallaxOffset * 0.05f), 0);
+    }
+    for (Sprite* it : platformes) {
+        it->Move((parallaxOffset * 0.1f), 0);
+    }
+    for (Sprite* it : obstacles) {
+        it->Move((parallaxOffset * 0.1f), 0);
+    }
+    for (Sprite* it : ennemies) {
+        it->Move((parallaxOffset * 0.1f), 0);
+    }
+    finishSprite->Move((parallaxOffset * 0.1f), 0);
 
     window->clear();
-    window->draw(carte1Sprite);
-    window->draw(carte2Sprite);
-    window->draw(carte3Sprite);
-    window->draw(carte4Sprite);
-    window->draw(carte5Sprite);
-    window->draw(carte6Sprite);
-    window->draw(carte7Sprite);
-    window->draw(carte8Sprite);
-    window->draw(carte9Sprite);
-    window->draw(carte10Sprite);
-    window->draw(playerSprite);
-    window->draw(plateforme1Sprite);
-    window->draw(plateforme2Sprite);
-    window->draw(plateforme3Sprite);
-    window->draw(plateforme4Sprite);
-    window->draw(plateforme5Sprite);
-    window->draw(plateforme6Sprite);
-    window->draw(plateforme7Sprite);
-    window->draw(plateforme8Sprite);
-    window->draw(plateforme9Sprite);
-    window->draw(plateforme10Sprite);
-    window->draw(obstacle1Sprite);
-    window->draw(obstacle2Sprite);
-    window->draw(enemy1Sprite);
-    window->draw(finishSprite);
+    for (Sprite* it : cartes) {
+        it->Draw(window);
+    }
+    for (Sprite* it : platformes) {
+        it->Draw(window);
+    }
+    for (Sprite* it : obstacles) {
+        it->Draw(window);
+    }
+    for (Sprite* it : ennemies) {
+        it->Draw(window);
+    }
+
+    finishSprite->Draw(window);
     window->display();
 }
 
-
-bool GameEngine::CheckCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2)
-{
-    sf::FloatRect bounds1 = sprite1.getGlobalBounds();
-    sf::FloatRect bounds2 = sprite2.getGlobalBounds();
-
-    return bounds1.intersects(bounds2);
+bool GameEngine::CheckCollision(Sprite* sprite1, Sprite* sprite2)
+{   
+    return sprite1->intersects(sprite2);
 }
 
-void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time deltaTime,
-                             sf::Sprite& plateformSprite1,
-                             sf::Sprite& plateforme2Sprite,
-                             sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
-                             sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
-                             sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
-                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite)
+void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time deltaTime,
+    std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies,
+    Sprite* finish)
 {
     float speed = 0.0f;
     const float gravity = 3.81f;
     float deltaTimeSeconds = deltaTime.asSeconds();
-
     speed += gravity;
+    godfrey->Move(0, (speed + speed * deltaTimeSeconds));
 
     // Vérification des collisions avec les autres sprites
-    if (CheckCollision(playerSprite, plateformSprite1) || CheckCollision(playerSprite, plateforme2Sprite) ||
-        CheckCollision(playerSprite, plateforme3Sprite) || CheckCollision(playerSprite, plateforme4Sprite) ||
-        CheckCollision(playerSprite, plateforme5Sprite) || CheckCollision(playerSprite, plateforme6Sprite) ||
-        CheckCollision(playerSprite, plateforme7Sprite) || CheckCollision(playerSprite, plateforme8Sprite) ||
-        CheckCollision(playerSprite, plateforme9Sprite) || CheckCollision(playerSprite, plateforme10Sprite) ||
-        CheckCollision(playerSprite, obstacle1Sprite) || CheckCollision(playerSprite, obstacle2Sprite))
-    {
-        playerSprite.move(0, 0);
-        //enemySprite.move(0, speed);
-    } else
-    {
-        playerSprite.move(0, (speed + speed * deltaTimeSeconds));
+    for (Sprite* it : platformes) {
+        if (CheckCollision(godfrey, it)) {
+            godfrey->Move(0, 0);
+            break;
+        }
     }
 
-    if (CheckCollision(playerSprite, enemy1Sprite))
-    {
-        std::cout << "t'es mort ! t'es mort ! t'es mort !";
+    for (Sprite* it : obstacles) {
+        if (CheckCollision(godfrey, it)) {
+            godfrey->Move(0, 0);
+            break;
+        }
     }
 
-    if (CheckCollision(playerSprite, finishSprite))
+    for (Sprite* it : ennemies) {
+        if (CheckCollision(godfrey, it)) {
+            std::cout << "t'es mort ! t'es mort ! t'es mort !";
+            break;
+        }
+    }
+
+    if (CheckCollision(godfrey, finish))
     {
         std::cout << "victory";
-        playerSprite.move(0, 0);
+        godfrey->Move(0, 0);
     }
 }
 
+Sprite* init_godfrey()
+{
+    return (new Sprite("src/assets/Godfrey.png", 72, 152, sf::Vector2f{ 700, 300 }));
+}
+
+std::vector<Sprite *> init_cartes()
+{
+    std::vector<Sprite *> sprites;
+    Sprite* sprite;
+    int carteSize = 1024;
+
+    for (int nb = 0; nb < 10; nb += 1) {
+        if (nb % 2 != 0) {
+            sprite = new Sprite("src/assets/Carte1.png", 1024, 1024, sf::Vector2f{ -500.0f + (carteSize * nb), 0});
+            sprites.push_back(sprite);
+        }
+        else {
+            sprite = new Sprite("src/assets/Carte1bis.png", 1024, 1024, sf::Vector2f{ -500.0f+ (carteSize * nb), 0 });
+            sprites.push_back(sprite);
+        }
+    }
+    return (sprites);
+}
+
+std::vector<Sprite*> init_platformes()
+{
+    std::vector<Sprite*> sprites;
+    Sprite* sprite;
+
+    for (int nb = 0; nb < 10; nb += 1) {
+        sprite = new Sprite("src/assets/platforme1.png", 1160, 119);
+        sprites.push_back(sprite);
+    }
+    sprites[0]->set_position(0, 900);
+    sprites[1]->set_position(sprites[0]->get_size().x + 200, 900);
+    sprites[2]->set_position(sprites[1]->get_position().x + sprites[1]->get_size().x, 900);
+    sprites[3]->set_position(sprites[2]->get_position().x + sprites[2]->get_size().x + 200, 900);
+    sprites[4]->set_position(sprites[3]->get_position().x + sprites[3]->get_size().x, 900);
+    sprites[5]->set_position(sprites[4]->get_position().x + sprites[4]->get_size().x, 900);
+    sprites[6]->set_position(sprites[5]->get_position().x + sprites[5]->get_size().x + 200, 900);
+    sprites[7]->set_position(sprites[6]->get_position().x + sprites[6]->get_size().x, 900);
+    sprites[8]->set_position(sprites[7]->get_position().x + sprites[7]->get_size().x + 250, 900);
+    sprites[9]->set_position(sprites[8]->get_position().x + sprites[8]->get_size().x, 900);
+
+    return (sprites);
+}
+
+std::vector<Sprite*> init_obstacles(std::vector<Sprite*> platformes)
+{
+    std::vector<Sprite*> sprites;
+    Sprite* sprite;
+
+    for (int nb = 0; nb < 2; nb += 1) {
+        sprite = new Sprite("src/assets/obstacle1.png", 1160, 119);
+        sprites.push_back(sprite);
+    }
+    sprites[0]->set_position(platformes[5]->get_position().x + (platformes[5]->get_size().x / 3),
+        645);
+    sprites[1]->set_position(platformes[6]->get_position().x + (platformes[6]->get_size().x / 3),
+        645);
+
+    return (sprites);
+}
+
+std::vector<Sprite *> init_ennemies(std::vector<Sprite*> platformes)
+{
+    std::vector<Sprite*> sprites;
+    Sprite* sprite;
+
+    for (int nb = 0; nb < 2; nb += 1) {
+        sprite = new Sprite("src/assets/monsterIdle.png", 1160, 119);
+        sprites.push_back(sprite);
+    }
+    sprites[0]->set_position(platformes[2]->get_position().x + (platformes[2]->get_size().x),
+        800);
+    sprites[1]->set_position(platformes[6]->get_position().x + (platformes[6]->get_size().x),
+        800);
+
+    return (sprites);   
+}
+
+Sprite* init_finish(std::vector<Sprite*> platformes)
+{
+    return (new Sprite("src/assets/finish.png", 190, 565, 
+        sf::Vector2f{ platformes[9]->get_position().x + (platformes[9]->get_size().x / 2), 335 }));
+}
 
 int GameEngine::Gameloop()
 {
@@ -188,323 +234,22 @@ int GameEngine::Gameloop()
     sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
 
     // Chargement de la texture pour le personnage
-    sf::Texture playerTexture;
-    if (!playerTexture.loadFromFile("src/assets/Godfrey.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-    sf::Sprite playerSprite(playerTexture);
-    sf::Vector2f playerPosition(700, 300);
-    playerSprite.setPosition(playerPosition);
+    Sprite* godfrey = init_godfrey();
 
-    // Chargement de la première carte
-    sf::Texture carte1Texture;
-    if (!carte1Texture.loadFromFile("src/assets/Carte1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
+    // Chargement des cartes en arrière plan
+    std::vector<Sprite *> cartes = init_cartes();
 
-    sf::Sprite carte1Sprite(carte1Texture);
-    sf::Vector2f carte1Position(-500, 0);
-    carte1Sprite.setPosition(carte1Position);
+    // Chargement des plateformes
+    std::vector<Sprite*> platformes = init_platformes();
 
-    // Chargement de la deuxième carte
-    sf::Texture carte2Texture;
+    // Chargement des obstacle
+    std::vector<Sprite*> obstacles = init_obstacles(platformes);
 
-    if (!carte2Texture.loadFromFile("src/assets/Carte1bis.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte2Sprite(carte2Texture);
-    sf::Vector2f carte2Position(carte1Sprite.getPosition().x + carte1Sprite.getGlobalBounds().width, 0);
-    carte2Sprite.setPosition(carte2Position);
-
-    // Chargement de la troisieme carte
-    sf::Texture carte3Texture;
-    if (!carte3Texture.loadFromFile("src/assets/Carte1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte3Sprite(carte3Texture);
-    sf::Vector2f carte3Position(carte2Sprite.getPosition().x + carte2Sprite.getGlobalBounds().width, 0);
-    carte3Sprite.setPosition(carte3Position);
-
-    // Chargement de la quatrieme carte
-    sf::Texture carte4Texture;
-
-    if (!carte4Texture.loadFromFile("src/assets/Carte1bis.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte4Sprite(carte4Texture);
-    sf::Vector2f carte4Position(carte3Sprite.getPosition().x + carte3Sprite.getGlobalBounds().width, 0);
-    carte4Sprite.setPosition(carte4Position);
-
-    // Chargement de la cinquième carte
-    sf::Texture carte5Texture;
-    if (!carte5Texture.loadFromFile("src/assets/Carte1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte5Sprite(carte5Texture);
-    sf::Vector2f carte5Position(carte4Sprite.getPosition().x + carte4Sprite.getGlobalBounds().width, 0);
-    carte5Sprite.setPosition(carte5Position);
-
-    // Chargement de la sixieme carte
-    sf::Texture carte6Texture;
-
-    if (!carte6Texture.loadFromFile("src/assets/Carte1bis.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte6Sprite(carte6Texture);
-    sf::Vector2f carte6Position(carte5Sprite.getPosition().x + carte5Sprite.getGlobalBounds().width, 0);
-    carte6Sprite.setPosition(carte6Position);
-
-    // Chargement de la septieme carte
-    sf::Texture carte7Texture;
-    if (!carte7Texture.loadFromFile("src/assets/Carte1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte7Sprite(carte7Texture);
-    sf::Vector2f carte7Position(carte6Sprite.getPosition().x + carte6Sprite.getGlobalBounds().width, 0);
-    carte7Sprite.setPosition(carte7Position);
-
-    // Chargement de la huitieme carte
-    sf::Texture carte8Texture;
-
-    if (!carte8Texture.loadFromFile("src/assets/Carte1bis.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte8Sprite(carte8Texture);
-    sf::Vector2f carte8Position(carte7Sprite.getPosition().x + carte7Sprite.getGlobalBounds().width, 0);
-    carte8Sprite.setPosition(carte8Position);
-
-    // Chargement de la septieme carte
-    sf::Texture carte9Texture;
-    if (!carte9Texture.loadFromFile("src/assets/Carte1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte9Sprite(carte9Texture);
-    sf::Vector2f carte9Position(carte8Sprite.getPosition().x + carte8Sprite.getGlobalBounds().width, 0);
-    carte9Sprite.setPosition(carte9Position);
-
-    // Chargement de la huitieme carte
-    sf::Texture carte10Texture;
-
-    if (!carte10Texture.loadFromFile("src/assets/Carte1bis.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite carte10Sprite(carte10Texture);
-    sf::Vector2f carte10Position(carte9Sprite.getPosition().x + carte9Sprite.getGlobalBounds().width, 0);
-    carte10Sprite.setPosition(carte10Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme1Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme1Sprite(plateforme1Texture);
-    sf::Vector2f plateforme1Position(0, 900);
-    plateforme1Sprite.setPosition(plateforme1Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme2Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme2Sprite(plateforme1Texture);
-    sf::Vector2f plateforme2Position(plateforme1Sprite.getGlobalBounds().width + 200, 900);
-    plateforme2Sprite.setPosition(plateforme2Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme3Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme3Sprite(plateforme1Texture);
-    sf::Vector2f plateforme3Position(plateforme2Sprite.getPosition().x + plateforme2Sprite.getGlobalBounds().width,
-                                     900);
-    plateforme3Sprite.setPosition(plateforme3Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme4Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme4Sprite(plateforme1Texture);
-    sf::Vector2f plateforme4Position(
-        plateforme3Sprite.getPosition().x + plateforme3Sprite.getGlobalBounds().width + 200,
-        900);
-    plateforme4Sprite.setPosition(plateforme4Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme5Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme5Sprite(plateforme1Texture);
-    sf::Vector2f plateforme5Position(plateforme4Sprite.getPosition().x + plateforme4Sprite.getGlobalBounds().width,
-                                     900);
-    plateforme5Sprite.setPosition(plateforme5Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme6Texture;
-    if (!plateforme5Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme6Sprite(plateforme1Texture);
-    sf::Vector2f plateforme6Position(plateforme5Sprite.getPosition().x + plateforme5Sprite.getGlobalBounds().width,
-                                     900);
-    plateforme6Sprite.setPosition(plateforme6Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme7Texture;
-    if (!plateforme6Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme7Sprite(plateforme1Texture);
-    sf::Vector2f plateforme7Position(
-        plateforme6Sprite.getPosition().x + plateforme6Sprite.getGlobalBounds().width + 200,
-        900);
-    plateforme7Sprite.setPosition(plateforme7Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme8Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme8Sprite(plateforme1Texture);
-    sf::Vector2f plateforme8Position(plateforme7Sprite.getPosition().x + plateforme7Sprite.getGlobalBounds().width,
-                                     900);
-    plateforme8Sprite.setPosition(plateforme8Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme9Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite plateforme9Sprite(plateforme1Texture);
-    sf::Vector2f plateforme9Position(
-        plateforme8Sprite.getPosition().x + plateforme8Sprite.getGlobalBounds().width + 250,
-        900);
-    plateforme9Sprite.setPosition(plateforme9Position);
-
-    // Chargement de la première plateforme
-    sf::Texture plateforme10Texture;
-    if (!plateforme10Texture.loadFromFile("src/assets/platforme1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite plateforme10Sprite(plateforme1Texture);
-    sf::Vector2f plateforme10Position(plateforme9Sprite.getPosition().x + plateforme9Sprite.getGlobalBounds().width,
-                                      900);
-    plateforme10Sprite.setPosition(plateforme10Position);
-
-    // Chargement d'un obstacle
-    sf::Texture obstacle1Texture;
-    if (!obstacle1Texture.loadFromFile("src/assets/obstacle1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite obstacle1Sprite(obstacle1Texture);
-    sf::Vector2f obstacle1Position(plateforme5Sprite.getPosition().x + (plateforme5Sprite.getGlobalBounds().width / 3),
-                                   645);
-    obstacle1Sprite.setPosition(obstacle1Position);
-
-
-    // Chargement d'un obstacle
-    sf::Texture obstacle2Texture;
-    if (!obstacle2Texture.loadFromFile("src/assets/obstacle1.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-
-    sf::Sprite obstacle2Sprite(obstacle2Texture);
-    sf::Vector2f obstacle2Position(plateforme8Sprite.getPosition().x + (plateforme8Sprite.getGlobalBounds().width / 3),
-                                   645);
-    obstacle2Sprite.setPosition(obstacle2Position);
-
-    // Chargement d'un ennemi
-    sf::Texture enemy1Texture;
-    if (!enemy1Texture.loadFromFile("src/assets/monsterIdle.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite enemy1Sprite(enemy1Texture);
-    sf::Vector2f enemy1Position(plateforme2Sprite.getPosition().x + (plateforme2Sprite.getGlobalBounds().width),
-                                800);
-    enemy1Sprite.setPosition(enemy1Position);
-
-    // Chargement d'un ennemi
-    sf::Texture enemy2Texture;
-    if (!enemy2Texture.loadFromFile("src/assets/monsterIdle.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite enemy2Sprite(enemy2Texture);
-    sf::Vector2f enemy2Position(plateforme6Sprite.getPosition().x + (plateforme6Sprite.getGlobalBounds().width),
-                                800);
-    enemy2Sprite.setPosition(enemy2Position);
+    // Chargement des ennemi
+    std::vector<Sprite*> ennemies = init_ennemies(platformes);
 
     // Chargement de la zone de fin
-    sf::Texture finishTexture;
-    if (!finishTexture.loadFromFile("src/assets/finish.png"))
-    {
-        // Gérer l'erreur si la texture ne peut pas être chargée
-    }
-
-    sf::Sprite finishSprite(finishTexture);
-    sf::Vector2f finishSpritePosition(
-        plateforme10Sprite.getPosition().x + (plateforme10Sprite.getGlobalBounds().width / 2),
-        335);
-    finishSprite.setPosition(finishSpritePosition);
+    Sprite* finishSprite = init_finish(platformes);
 
     float parallaxOffset = 0.0f;
 
@@ -523,22 +268,9 @@ int GameEngine::Gameloop()
 
     while (window->isOpen())
     {
-        GameInputs(window, playerSprite, deltaTime, parallaxOffset);
-        GamePhysics(window, playerSprite, deltaTime, plateforme1Sprite,
-                    plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
-                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
-                    obstacle2Sprite, enemy1Sprite,
-                    finishSprite);
-
-        GameDrawing(window, playerSprite, carte1Sprite, carte2Sprite, carte3Sprite, carte4Sprite, carte5Sprite,
-                    carte6Sprite, carte7Sprite, carte8Sprite, carte9Sprite, carte10Sprite, plateforme1Sprite,
-                    plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
-                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
-                    obstacle2Sprite, enemy1Sprite,
-                    finishSprite,
-                    parallaxOffset);
-
-
+        GameInputs(window, godfrey, deltaTime, parallaxOffset);
+        GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite);
+        GameDrawing(window, cartes, platformes, obstacles, ennemies, finishSprite, parallaxOffset);
         deltaTime = clock.restart();
     }
 
