@@ -60,7 +60,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::
     }
 }
 
-void GameEngine::GameDrawing(sf::RenderWindow* window, std::vector<Sprite*> cartes, std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies, Sprite* finishSprite,
+void GameEngine::GameDrawing(sf::RenderWindow* window, Sprite* godfrey, std::vector<Sprite*> cartes, std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies, Sprite* finishSprite,
                                 float& parallaxOffset)
 {
     // Appliquer le décalage de parallaxe aux positions des cartes
@@ -91,8 +91,8 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, std::vector<Sprite*> cart
     for (Sprite* it : ennemies) {
         it->Draw(window);
     }
-
     finishSprite->Draw(window);
+    godfrey->Draw(window);
     window->display();
 }
 
@@ -270,7 +270,7 @@ int GameEngine::Gameloop()
     {
         GameInputs(window, godfrey, deltaTime, parallaxOffset);
         GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite);
-        GameDrawing(window, cartes, platformes, obstacles, ennemies, finishSprite, parallaxOffset);
+        GameDrawing(window, godfrey, cartes, platformes, obstacles, ennemies, finishSprite, parallaxOffset);
         deltaTime = clock.restart();
     }
 
