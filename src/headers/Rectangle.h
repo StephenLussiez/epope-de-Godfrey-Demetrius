@@ -12,10 +12,10 @@ private:
 
 public:
 	Rectangle(sf::Vector2f size, sf::Vector2f pos, sf::Color color);
-	void setSize(sf::Vector2f size);
-	void setColor(sf::Color color);
-	void setPosition(sf::Vector2f pos);
-	sf::Vector2f getSize();
-	sf::Color getColor();
-	sf::Vector2f getPosition();
+	void set_size(sf::Vector2f size);
+	void set_color(sf::Color color);
+	void set_position(sf::Vector2f pos);
+	sf::Vector2f get_size();
+	sf::Color get_color();
+	sf::Vector2f get_position();
 };

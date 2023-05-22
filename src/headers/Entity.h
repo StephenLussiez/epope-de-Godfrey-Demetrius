@@ -1,10 +1,10 @@
 #include <string>
-#include "headers/DrawableSprite.h"
+#include "Sprite.h"
 
 class Entity
 {
 public:
-    Entity(const ::std::string& name, float speed, const DrawableSprite& sprite)
+    Entity(const ::std::string& name, float speed, const Sprite& sprite)
         : Name(name),
           speed(speed),
           sprite(sprite) {}
@@ -17,5 +17,6 @@ public:
 private:
     std::string Name;
     float speed = 0;
-    DrawableSprite sprite;
+    
+    Sprite sprite;
 };

@@ -1,32 +1,42 @@
 #include "headers/Sprite.h"
 
-void Sprite::set_Texture(std::string path)
+void Sprite::set_texture(std::string path)
 {
 	m_texture.loadFromFile(path);
 	m_sprite.setTexture(m_texture);
 }
-void Sprite::set_Texture(std::string path, sf::IntRect area)
+
+void Sprite::set_area(int top, int left, int width, int height)
 {
-	m_texture.loadFromFile(path, area);
-	m_sprite.setTexture(m_texture);
+	m_area.top = top;
+	m_area.left = left;
+	m_area.width = width;
+	m_area.height = height;
+	m_sprite.setTextureRect(m_area);
 }
 
-void Sprite::set_Dimensions(int top, int left, int width, int height)
+void Sprite::set_area(sf::IntRect rect)
 {
-	m_dimensions.top = top;
-	m_dimensions.left = left;
-	m_dimensions.width = width;
-	m_dimensions.height = height;
-	m_sprite.setTextureRect(m_dimensions);
+	m_area = rect;
 }
 
-void Sprite::set_Dimensions(sf::IntRect rect)
+void Sprite::set_size(int width, int height)
 {
-	m_dimensions = rect;
+	m_size.x = width;
+	m_size.y = height;
 }
 
+void Sprite::set_size(sf::Vector2f size)
+{
+	m_size = size;
+}
 
-void Sprite::set_Position(sf::Vector2f pos)
+void Sprite::set_position(float x, float y)
+{
+	m_sprite.setPosition(sf::Vector2f{ x, y });
+}
+
+void Sprite::set_position(sf::Vector2f pos)
 {
 	m_sprite.setPosition(pos);
 }
@@ -41,15 +51,20 @@ sf::Texture Sprite::get_texture()
 	return (m_texture);
 }
 
+sf::Vector2f Sprite::get_size()
+{
+	return (m_size);
+}
+
 sf::Vector2f Sprite::get_position()
 {
-	return (m_position);
+	return (m_sprite.getPosition());
 }
 
 
-sf::IntRect Sprite::get_dimensions()
+sf::IntRect Sprite::get_area()
 {
-	return (m_dimensions);
+	return (m_area);
 }
 
 sf::Sprite Sprite::get_sprite()
@@ -57,33 +72,40 @@ sf::Sprite Sprite::get_sprite()
 	return (m_sprite);
 }
 
-Sprite::Sprite(std::string path)
+Sprite::Sprite(std::string path, int width, int height)
 {
-	set_Texture(path);
+	set_texture(path);
+	m_size.x = width;
+	m_size.y = height;
 }
 
 Sprite::Sprite(std::string path, sf::IntRect area)
 {
-	set_Texture(path, area);
+	set_texture(path);
+	m_size.x = area.width;
+	m_size.y = area.height;
+	set_area(area);
 }
 
-Sprite::Sprite(std::string path, sf::Vector2f pos)
+Sprite::Sprite(std::string path, int width, int height, sf::Vector2f pos)
 {
-	set_Texture(path);
-	set_Position(pos);
+	set_texture(path);
+	m_size.x = width;
+	m_size.y = height;
+	set_position(pos);
 }
 
 Sprite::Sprite(std::string path, sf::IntRect area, sf::Vector2f pos)
 {
-	set_Texture(path, area);
-	set_Position(pos);
+	set_texture(path);
+	set_position(pos);
 }
 
 void Sprite::animate()
 {
-	m_dimensions.top += m_dimensions.width;
-	if (m_dimensions.top > maxSize)
-		m_dimensions.top = 0;
+	m_area.top += m_area.width;
+	if (m_area.top > maxSize)
+		m_area.top = 0;
 }
 
 void Sprite::Draw(sf::RenderWindow window)
