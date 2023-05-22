@@ -1,6 +1,7 @@
 #include "headers/GameEngine.h"
 #include <iostream>
 #include "headers/WindowManager.h"
+#include "SFML/Audio.hpp"  // Inclure la bibliothèque SFML Audio
 
 GameEngine::GameEngine() {}
 
@@ -18,7 +19,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
     }
 
     // Contrôle du personnage
-    float speed = 8.0f;
+    float speed = 11.7f;
     float jumpHeight = -2.0f;
     static bool isJumping = false;
     static float jumpSpeed = 0.0f;
@@ -69,7 +70,8 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
                              sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
                              sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                              sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& finishSprite,
+                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
+                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite,
                              float& parallaxOffset)
 {
     // Appliquer le décalage de parallaxe aux positions des cartes
@@ -93,6 +95,9 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
     plateforme8Sprite.move((parallaxOffset * 0.1f), 0);
     plateforme9Sprite.move((parallaxOffset * 0.1f), 0);
     plateforme10Sprite.move((parallaxOffset * 0.1f), 0);
+    obstacle1Sprite.move((parallaxOffset * 0.1f), 0);
+    obstacle2Sprite.move((parallaxOffset * 0.1f), 0);
+    enemy1Sprite.move((parallaxOffset * 0.1f), 0);
     finishSprite.move((parallaxOffset * 0.1f), 0);
 
     window->clear();
@@ -117,6 +122,9 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
     window->draw(plateforme8Sprite);
     window->draw(plateforme9Sprite);
     window->draw(plateforme10Sprite);
+    window->draw(obstacle1Sprite);
+    window->draw(obstacle2Sprite);
+    window->draw(enemy1Sprite);
     window->draw(finishSprite);
     window->display();
 }
@@ -130,12 +138,14 @@ bool GameEngine::CheckCollision(const sf::Sprite& sprite1, const sf::Sprite& spr
     return bounds1.intersects(bounds2);
 }
 
-void GameEngine::GamePhysics(sf::Sprite& playerSprite, sf::Time deltaTime, sf::Sprite& plateformSprite1,
+void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time deltaTime,
+                             sf::Sprite& plateformSprite1,
                              sf::Sprite& plateforme2Sprite,
                              sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
                              sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                              sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& finishSprite)
+                             sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
+                             sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite)
 {
     float speed = 0.0f;
     const float gravity = 3.81f;
@@ -148,14 +158,19 @@ void GameEngine::GamePhysics(sf::Sprite& playerSprite, sf::Time deltaTime, sf::S
         CheckCollision(playerSprite, plateforme3Sprite) || CheckCollision(playerSprite, plateforme4Sprite) ||
         CheckCollision(playerSprite, plateforme5Sprite) || CheckCollision(playerSprite, plateforme6Sprite) ||
         CheckCollision(playerSprite, plateforme7Sprite) || CheckCollision(playerSprite, plateforme8Sprite) ||
-        CheckCollision(playerSprite, plateforme9Sprite) || CheckCollision(playerSprite, plateforme10Sprite))
+        CheckCollision(playerSprite, plateforme9Sprite) || CheckCollision(playerSprite, plateforme10Sprite) ||
+        CheckCollision(playerSprite, obstacle1Sprite) || CheckCollision(playerSprite, obstacle2Sprite))
     {
         playerSprite.move(0, 0);
         //enemySprite.move(0, speed);
     } else
     {
         playerSprite.move(0, (speed + speed * deltaTimeSeconds));
-        // Mettre à jour le décalage de parallaxe en fonction de la vitesse du personnage
+    }
+
+    if (CheckCollision(playerSprite, enemy1Sprite))
+    {
+        std::cout << "t'es mort ! t'es mort ! t'es mort !";
     }
 
     if (CheckCollision(playerSprite, finishSprite))
@@ -318,7 +333,7 @@ int GameEngine::Gameloop()
 
 
     sf::Sprite plateforme2Sprite(plateforme1Texture);
-    sf::Vector2f plateforme2Position(plateforme1Sprite.getGlobalBounds().width, 900);
+    sf::Vector2f plateforme2Position(plateforme1Sprite.getGlobalBounds().width + 200, 900);
     plateforme2Sprite.setPosition(plateforme2Position);
 
     // Chargement de la première plateforme
@@ -343,8 +358,9 @@ int GameEngine::Gameloop()
 
 
     sf::Sprite plateforme4Sprite(plateforme1Texture);
-    sf::Vector2f plateforme4Position(plateforme3Sprite.getPosition().x + plateforme3Sprite.getGlobalBounds().width,
-                                     900);
+    sf::Vector2f plateforme4Position(
+        plateforme3Sprite.getPosition().x + plateforme3Sprite.getGlobalBounds().width + 200,
+        900);
     plateforme4Sprite.setPosition(plateforme4Position);
 
     // Chargement de la première plateforme
@@ -382,8 +398,9 @@ int GameEngine::Gameloop()
 
 
     sf::Sprite plateforme7Sprite(plateforme1Texture);
-    sf::Vector2f plateforme7Position(plateforme6Sprite.getPosition().x + plateforme6Sprite.getGlobalBounds().width,
-                                     900);
+    sf::Vector2f plateforme7Position(
+        plateforme6Sprite.getPosition().x + plateforme6Sprite.getGlobalBounds().width + 200,
+        900);
     plateforme7Sprite.setPosition(plateforme7Position);
 
     // Chargement de la première plateforme
@@ -408,8 +425,9 @@ int GameEngine::Gameloop()
 
 
     sf::Sprite plateforme9Sprite(plateforme1Texture);
-    sf::Vector2f plateforme9Position(plateforme8Sprite.getPosition().x + plateforme8Sprite.getGlobalBounds().width,
-                                     900);
+    sf::Vector2f plateforme9Position(
+        plateforme8Sprite.getPosition().x + plateforme8Sprite.getGlobalBounds().width + 250,
+        900);
     plateforme9Sprite.setPosition(plateforme9Position);
 
     // Chargement de la première plateforme
@@ -424,6 +442,56 @@ int GameEngine::Gameloop()
                                       900);
     plateforme10Sprite.setPosition(plateforme10Position);
 
+    // Chargement d'un obstacle
+    sf::Texture obstacle1Texture;
+    if (!obstacle1Texture.loadFromFile("src/assets/obstacle1.png"))
+    {
+        // Gérer l'erreur si la texture ne peut pas être chargée
+    }
+
+
+    sf::Sprite obstacle1Sprite(obstacle1Texture);
+    sf::Vector2f obstacle1Position(plateforme5Sprite.getPosition().x + (plateforme5Sprite.getGlobalBounds().width / 3),
+                                   645);
+    obstacle1Sprite.setPosition(obstacle1Position);
+
+
+    // Chargement d'un obstacle
+    sf::Texture obstacle2Texture;
+    if (!obstacle2Texture.loadFromFile("src/assets/obstacle1.png"))
+    {
+        // Gérer l'erreur si la texture ne peut pas être chargée
+    }
+
+
+    sf::Sprite obstacle2Sprite(obstacle2Texture);
+    sf::Vector2f obstacle2Position(plateforme8Sprite.getPosition().x + (plateforme8Sprite.getGlobalBounds().width / 3),
+                                   645);
+    obstacle2Sprite.setPosition(obstacle2Position);
+
+    // Chargement d'un ennemi
+    sf::Texture enemy1Texture;
+    if (!enemy1Texture.loadFromFile("src/assets/monsterIdle.png"))
+    {
+        // Gérer l'erreur si la texture ne peut pas être chargée
+    }
+
+    sf::Sprite enemy1Sprite(enemy1Texture);
+    sf::Vector2f enemy1Position(plateforme2Sprite.getPosition().x + (plateforme2Sprite.getGlobalBounds().width),
+                                800);
+    enemy1Sprite.setPosition(enemy1Position);
+
+    // Chargement d'un ennemi
+    sf::Texture enemy2Texture;
+    if (!enemy2Texture.loadFromFile("src/assets/monsterIdle.png"))
+    {
+        // Gérer l'erreur si la texture ne peut pas être chargée
+    }
+
+    sf::Sprite enemy2Sprite(enemy2Texture);
+    sf::Vector2f enemy2Position(plateforme6Sprite.getPosition().x + (plateforme6Sprite.getGlobalBounds().width),
+                                800);
+    enemy2Sprite.setPosition(enemy2Position);
 
     // Chargement de la zone de fin
     sf::Texture finishTexture;
@@ -440,22 +508,36 @@ int GameEngine::Gameloop()
 
     float parallaxOffset = 0.0f;
 
+    // Chargement de la musique
+    sf::Music music;
+    if (!music.openFromFile("src/assets/EpicMusic.ogg")) { }
+
+    // Réglages de la musique
+    music.setVolume(50); // Définir le volume (0-100)
+    music.setLoop(true); // Définir la musique en mode boucle
+
+    // Lancer la musique
+    music.play();
+
     sf::Time deltaTime = clock.restart();
 
     while (window->isOpen())
     {
         GameInputs(window, playerSprite, deltaTime, parallaxOffset);
-        GamePhysics(playerSprite, deltaTime, plateforme1Sprite,
+        GamePhysics(window, playerSprite, deltaTime, plateforme1Sprite,
                     plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
-                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, finishSprite);
+                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
+                    obstacle2Sprite, enemy1Sprite,
+                    finishSprite);
 
         GameDrawing(window, playerSprite, carte1Sprite, carte2Sprite, carte3Sprite, carte4Sprite, carte5Sprite,
                     carte6Sprite, carte7Sprite, carte8Sprite, carte9Sprite, carte10Sprite, plateforme1Sprite,
                     plateforme2Sprite, plateforme3Sprite, plateforme4Sprite, plateforme5Sprite, plateforme6Sprite,
-                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, finishSprite,
+                    plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, obstacle1Sprite,
+                    obstacle2Sprite, enemy1Sprite,
+                    finishSprite,
                     parallaxOffset);
 
-        std::cout << plateforme4Sprite.getGlobalBounds().width;
 
         deltaTime = clock.restart();
     }

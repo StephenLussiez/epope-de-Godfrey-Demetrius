@@ -15,13 +15,18 @@ public:
                      sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
                      sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                      sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                     sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& finishSprite,
+                     sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
+                     sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite,
+                     sf::Sprite& finishSprite,
                      float& parallaxOffset);
     bool CheckCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2);
-    void GamePhysics(sf::Sprite& playerSprite, sf::Time deltaTime, sf::Sprite& plateformSprite1,
+    void GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite, sf::Time deltaTime,
+                     sf::Sprite& plateformSprite1,
                      sf::Sprite& plateforme2Sprite,
                      sf::Sprite& plateforme3Sprite, sf::Sprite& plateforme4Sprite,
                      sf::Sprite& plateforme5Sprite, sf::Sprite& plateforme6Sprite,
                      sf::Sprite& plateforme7Sprite, sf::Sprite& plateforme8Sprite,
-                     sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& finishSprite);
+                     sf::Sprite& plateforme9Sprite, sf::Sprite& plateforme10Sprite, sf::Sprite& obstacle1Sprite,
+                     sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite,
+                     sf::Sprite& finishSprite);
 };
