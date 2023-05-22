@@ -27,11 +27,9 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
-        playerSprite.move(-speed * 20 * deltaTimeSeconds, 0);
         parallaxOffset = speed;
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
-        playerSprite.move(speed * 20 * deltaTimeSeconds, 0);
         parallaxOffset = -speed;
     } else
     {
@@ -154,13 +152,16 @@ void GameEngine::GamePhysics(sf::Sprite& playerSprite, sf::Time deltaTime, sf::S
     {
         playerSprite.move(0, 0);
         //enemySprite.move(0, speed);
-    } else if (CheckCollision(playerSprite, finishSprite))
-    {
-        std::cout << "victory";
     } else
     {
         playerSprite.move(0, (speed + speed * deltaTimeSeconds));
         // Mettre à jour le décalage de parallaxe en fonction de la vitesse du personnage
+    }
+
+    if (CheckCollision(playerSprite, finishSprite))
+    {
+        std::cout << "victory";
+        playerSprite.move(0, 0);
     }
 }
 
@@ -178,7 +179,7 @@ int GameEngine::Gameloop()
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
     sf::Sprite playerSprite(playerTexture);
-    sf::Vector2f playerPosition(0, 300);
+    sf::Vector2f playerPosition(700, 300);
     playerSprite.setPosition(playerPosition);
 
     // Chargement de la première carte
@@ -298,127 +299,127 @@ int GameEngine::Gameloop()
 
     // Chargement de la première plateforme
     sf::Texture plateforme1Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme1Sprite(carte1Texture);
+    sf::Sprite plateforme1Sprite(plateforme1Texture);
     sf::Vector2f plateforme1Position(0, 900);
     plateforme1Sprite.setPosition(plateforme1Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme2Texture;
-    if (!plateforme2Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme2Sprite(carte1Texture);
+    sf::Sprite plateforme2Sprite(plateforme1Texture);
     sf::Vector2f plateforme2Position(plateforme1Sprite.getGlobalBounds().width, 900);
     plateforme2Sprite.setPosition(plateforme2Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme3Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme3Sprite(carte1Texture);
+    sf::Sprite plateforme3Sprite(plateforme1Texture);
     sf::Vector2f plateforme3Position(plateforme2Sprite.getPosition().x + plateforme2Sprite.getGlobalBounds().width,
                                      900);
     plateforme3Sprite.setPosition(plateforme3Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme4Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme4Sprite(carte1Texture);
+    sf::Sprite plateforme4Sprite(plateforme1Texture);
     sf::Vector2f plateforme4Position(plateforme3Sprite.getPosition().x + plateforme3Sprite.getGlobalBounds().width,
                                      900);
     plateforme4Sprite.setPosition(plateforme4Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme5Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme5Sprite(carte1Texture);
+    sf::Sprite plateforme5Sprite(plateforme1Texture);
     sf::Vector2f plateforme5Position(plateforme4Sprite.getPosition().x + plateforme4Sprite.getGlobalBounds().width,
                                      900);
     plateforme5Sprite.setPosition(plateforme5Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme6Texture;
-    if (!plateforme5Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme5Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme6Sprite(carte1Texture);
+    sf::Sprite plateforme6Sprite(plateforme1Texture);
     sf::Vector2f plateforme6Position(plateforme5Sprite.getPosition().x + plateforme5Sprite.getGlobalBounds().width,
                                      900);
     plateforme6Sprite.setPosition(plateforme6Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme7Texture;
-    if (!plateforme6Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme6Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme7Sprite(carte1Texture);
+    sf::Sprite plateforme7Sprite(plateforme1Texture);
     sf::Vector2f plateforme7Position(plateforme6Sprite.getPosition().x + plateforme6Sprite.getGlobalBounds().width,
                                      900);
     plateforme7Sprite.setPosition(plateforme7Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme8Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme8Sprite(carte1Texture);
+    sf::Sprite plateforme8Sprite(plateforme1Texture);
     sf::Vector2f plateforme8Position(plateforme7Sprite.getPosition().x + plateforme7Sprite.getGlobalBounds().width,
                                      900);
     plateforme8Sprite.setPosition(plateforme8Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme9Texture;
-    if (!plateforme1Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
 
-    sf::Sprite plateforme9Sprite(carte1Texture);
+    sf::Sprite plateforme9Sprite(plateforme1Texture);
     sf::Vector2f plateforme9Position(plateforme8Sprite.getPosition().x + plateforme8Sprite.getGlobalBounds().width,
                                      900);
     plateforme9Sprite.setPosition(plateforme9Position);
 
     // Chargement de la première plateforme
     sf::Texture plateforme10Texture;
-    if (!plateforme10Texture.loadFromFile("src/assets/plateforme1.png"))
+    if (!plateforme10Texture.loadFromFile("src/assets/platforme1.png"))
     {
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
-    sf::Sprite plateforme10Sprite(carte1Texture);
+    sf::Sprite plateforme10Sprite(plateforme1Texture);
     sf::Vector2f plateforme10Position(plateforme9Sprite.getPosition().x + plateforme9Sprite.getGlobalBounds().width,
                                       900);
     plateforme10Sprite.setPosition(plateforme10Position);
@@ -431,10 +432,10 @@ int GameEngine::Gameloop()
         // Gérer l'erreur si la texture ne peut pas être chargée
     }
 
-    sf::Sprite finishSprite(carte1Texture);
+    sf::Sprite finishSprite(finishTexture);
     sf::Vector2f finishSpritePosition(
         plateforme10Sprite.getPosition().x + (plateforme10Sprite.getGlobalBounds().width / 2),
-        850);
+        335);
     finishSprite.setPosition(finishSpritePosition);
 
     float parallaxOffset = 0.0f;
@@ -454,8 +455,8 @@ int GameEngine::Gameloop()
                     plateforme7Sprite, plateforme8Sprite, plateforme9Sprite, plateforme10Sprite, finishSprite,
                     parallaxOffset);
 
-        std::cout << playerSprite.getPosition().x;
-        std::cout << playerSprite.getPosition().y;
+        std::cout << plateforme4Sprite.getGlobalBounds().width;
+
         deltaTime = clock.restart();
     }
 
