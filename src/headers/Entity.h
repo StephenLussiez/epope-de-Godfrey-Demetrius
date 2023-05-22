@@ -1,9 +1,10 @@
 #include <string>
-#include "headers/DrawableSprite.h"
+#include "Sprite.h"
 
 class Entity
 {
 public:
+
     Entity(::std::string name, float speed, sf::Sprite sprite)
         : Name(std::move(name)),
           speed(speed),

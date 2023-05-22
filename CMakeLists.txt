@@ -27,7 +27,11 @@ set(SOURCES
     src/Mobs.cpp
     src/Player.cpp
     src/WindowManager.cpp
-    src/DrawableSprite.cpp
+    src/Sprite.cpp
+    src/Button.cpp
+    src/Rectangle.cpp
+    src/Menu.cpp
+
 )
 
 # Add header files
@@ -39,7 +43,10 @@ set(HEADERS
     src/headers/Mobs.h
     src/headers/Player.h
     src/headers/WindowManager.h
-    src/headers/DrawableSprite.h
+    src/headers/Sprite.h
+    src/headers/Button.h
+    src/headers/Rectangle.h
+    src/headers/Menu.h
 
 )
 

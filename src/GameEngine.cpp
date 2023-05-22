@@ -1,7 +1,7 @@
 #include "headers/GameEngine.h"
 #include <iostream>
 #include "headers/WindowManager.h"
-#include "SFML/Audio.hpp"  // Inclure la bibliothèque SFML Audio
+#include "SFML/Audio.hpp"  // Inclure la bibliothÃ¨que SFML Audio
 
 GameEngine::GameEngine() {}
 
@@ -18,7 +18,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, sf::Sprite& playerSprite, 
         }
     }
 
-    // Contrôle du personnage
+    // ContrÃ´le du personnage
     float speed = 11.7f;
     float jumpHeight = -2.0f;
     static bool isJumping = false;
@@ -74,7 +74,7 @@ void GameEngine::GameDrawing(sf::RenderWindow* window, sf::Sprite& playerSprite,
                              sf::Sprite& obstacle2Sprite, sf::Sprite& enemy1Sprite, sf::Sprite& finishSprite,
                              float& parallaxOffset)
 {
-    // Appliquer le décalage de parallaxe aux positions des cartes
+    // Appliquer le dÃ©calage de parallaxe aux positions des cartes
     carte1Sprite.move((parallaxOffset * 0.05f), 0);
     carte2Sprite.move((parallaxOffset * 0.05f), 0);
     carte3Sprite.move((parallaxOffset * 0.05f), 0);
@@ -153,7 +153,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, sf::Sprite& playerSprite,
 
     speed += gravity;
 
-    // Vérification des collisions avec les autres sprites
+    // VÃ©rification des collisions avec les autres sprites
     if (CheckCollision(playerSprite, plateformSprite1) || CheckCollision(playerSprite, plateforme2Sprite) ||
         CheckCollision(playerSprite, plateforme3Sprite) || CheckCollision(playerSprite, plateforme4Sprite) ||
         CheckCollision(playerSprite, plateforme5Sprite) || CheckCollision(playerSprite, plateforme6Sprite) ||
@@ -185,35 +185,35 @@ int GameEngine::Gameloop()
 {
     sf::Clock clock;
     WindowManager* windowBox = new WindowManager();
-    sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
+    sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'Ã©popÃ©e de Goldfey Dimitrius");
 
     // Chargement de la texture pour le personnage
     sf::Texture playerTexture;
     if (!playerTexture.loadFromFile("src/assets/Godfrey.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
     sf::Sprite playerSprite(playerTexture);
     sf::Vector2f playerPosition(700, 300);
     playerSprite.setPosition(playerPosition);
 
-    // Chargement de la première carte
+    // Chargement de la premiÃ¨re carte
     sf::Texture carte1Texture;
     if (!carte1Texture.loadFromFile("src/assets/Carte1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte1Sprite(carte1Texture);
     sf::Vector2f carte1Position(-500, 0);
     carte1Sprite.setPosition(carte1Position);
 
-    // Chargement de la deuxième carte
+    // Chargement de la deuxiÃ¨me carte
     sf::Texture carte2Texture;
 
     if (!carte2Texture.loadFromFile("src/assets/Carte1bis.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte2Sprite(carte2Texture);
@@ -224,7 +224,7 @@ int GameEngine::Gameloop()
     sf::Texture carte3Texture;
     if (!carte3Texture.loadFromFile("src/assets/Carte1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte3Sprite(carte3Texture);
@@ -236,18 +236,18 @@ int GameEngine::Gameloop()
 
     if (!carte4Texture.loadFromFile("src/assets/Carte1bis.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte4Sprite(carte4Texture);
     sf::Vector2f carte4Position(carte3Sprite.getPosition().x + carte3Sprite.getGlobalBounds().width, 0);
     carte4Sprite.setPosition(carte4Position);
 
-    // Chargement de la cinquième carte
+    // Chargement de la cinquiÃ¨me carte
     sf::Texture carte5Texture;
     if (!carte5Texture.loadFromFile("src/assets/Carte1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte5Sprite(carte5Texture);
@@ -259,7 +259,7 @@ int GameEngine::Gameloop()
 
     if (!carte6Texture.loadFromFile("src/assets/Carte1bis.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte6Sprite(carte6Texture);
@@ -270,7 +270,7 @@ int GameEngine::Gameloop()
     sf::Texture carte7Texture;
     if (!carte7Texture.loadFromFile("src/assets/Carte1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte7Sprite(carte7Texture);
@@ -282,7 +282,7 @@ int GameEngine::Gameloop()
 
     if (!carte8Texture.loadFromFile("src/assets/Carte1bis.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte8Sprite(carte8Texture);
@@ -293,7 +293,7 @@ int GameEngine::Gameloop()
     sf::Texture carte9Texture;
     if (!carte9Texture.loadFromFile("src/assets/Carte1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte9Sprite(carte9Texture);
@@ -305,18 +305,18 @@ int GameEngine::Gameloop()
 
     if (!carte10Texture.loadFromFile("src/assets/Carte1bis.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite carte10Sprite(carte10Texture);
     sf::Vector2f carte10Position(carte9Sprite.getPosition().x + carte9Sprite.getGlobalBounds().width, 0);
     carte10Sprite.setPosition(carte10Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme1Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -324,11 +324,11 @@ int GameEngine::Gameloop()
     sf::Vector2f plateforme1Position(0, 900);
     plateforme1Sprite.setPosition(plateforme1Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme2Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -336,11 +336,11 @@ int GameEngine::Gameloop()
     sf::Vector2f plateforme2Position(plateforme1Sprite.getGlobalBounds().width + 200, 900);
     plateforme2Sprite.setPosition(plateforme2Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme3Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -349,11 +349,11 @@ int GameEngine::Gameloop()
                                      900);
     plateforme3Sprite.setPosition(plateforme3Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme4Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -363,11 +363,11 @@ int GameEngine::Gameloop()
         900);
     plateforme4Sprite.setPosition(plateforme4Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme5Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -376,11 +376,11 @@ int GameEngine::Gameloop()
                                      900);
     plateforme5Sprite.setPosition(plateforme5Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme6Texture;
     if (!plateforme5Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -389,11 +389,11 @@ int GameEngine::Gameloop()
                                      900);
     plateforme6Sprite.setPosition(plateforme6Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme7Texture;
     if (!plateforme6Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -403,11 +403,11 @@ int GameEngine::Gameloop()
         900);
     plateforme7Sprite.setPosition(plateforme7Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme8Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -416,11 +416,11 @@ int GameEngine::Gameloop()
                                      900);
     plateforme8Sprite.setPosition(plateforme8Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme9Texture;
     if (!plateforme1Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -430,11 +430,11 @@ int GameEngine::Gameloop()
         900);
     plateforme9Sprite.setPosition(plateforme9Position);
 
-    // Chargement de la première plateforme
+    // Chargement de la premiÃ¨re plateforme
     sf::Texture plateforme10Texture;
     if (!plateforme10Texture.loadFromFile("src/assets/platforme1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite plateforme10Sprite(plateforme1Texture);
@@ -446,7 +446,7 @@ int GameEngine::Gameloop()
     sf::Texture obstacle1Texture;
     if (!obstacle1Texture.loadFromFile("src/assets/obstacle1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -460,7 +460,7 @@ int GameEngine::Gameloop()
     sf::Texture obstacle2Texture;
     if (!obstacle2Texture.loadFromFile("src/assets/obstacle1.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
 
@@ -473,7 +473,7 @@ int GameEngine::Gameloop()
     sf::Texture enemy1Texture;
     if (!enemy1Texture.loadFromFile("src/assets/monsterIdle.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite enemy1Sprite(enemy1Texture);
@@ -485,7 +485,7 @@ int GameEngine::Gameloop()
     sf::Texture enemy2Texture;
     if (!enemy2Texture.loadFromFile("src/assets/monsterIdle.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite enemy2Sprite(enemy2Texture);
@@ -497,7 +497,7 @@ int GameEngine::Gameloop()
     sf::Texture finishTexture;
     if (!finishTexture.loadFromFile("src/assets/finish.png"))
     {
-        // Gérer l'erreur si la texture ne peut pas être chargée
+        // GÃ©rer l'erreur si la texture ne peut pas Ãªtre chargÃ©e
     }
 
     sf::Sprite finishSprite(finishTexture);
@@ -512,9 +512,9 @@ int GameEngine::Gameloop()
     sf::Music music;
     if (!music.openFromFile("src/assets/EpicMusic.ogg")) { }
 
-    // Réglages de la musique
-    music.setVolume(50); // Définir le volume (0-100)
-    music.setLoop(true); // Définir la musique en mode boucle
+    // RÃ©glages de la musique
+    music.setVolume(50); // DÃ©finir le volume (0-100)
+    music.setLoop(true); // DÃ©finir la musique en mode boucle
 
     // Lancer la musique
     music.play();
@@ -541,7 +541,6 @@ int GameEngine::Gameloop()
 
         deltaTime = clock.restart();
     }
-
 
     return 0;
 }
