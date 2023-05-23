@@ -257,6 +257,11 @@ Sprite* init_godfrey()
     return (new Sprite("src/assets/Godfrey.png", 72, 152, sf::Vector2f {700, 300}));
 }
 
+Sprite* init_godfreyWalk()
+{
+    return (new Sprite("src/assets/Godfrey-walk.png", 72, 152, sf::Vector2f {700, 300}));
+}
+
 std::vector<Sprite*> init_cartes()
 {
     std::vector<Sprite*> sprites;
@@ -330,7 +335,7 @@ std::vector<Sprite*> init_ennemies(std::vector<Sprite*> platformes)
         sprite = new Sprite("src/assets/monsterIdle.png", 1160, 119);
         sprites.push_back(sprite);
     }
-    sprites[0]->set_position(platformes[2]->get_position().x + (platformes[2]->get_size().x),
+    sprites[0]->set_position(platformes[2]->get_position().x + (platformes[2]->get_size().x) + 200,
                              800);
     sprites[1]->set_position(platformes[6]->get_position().x + (platformes[6]->get_size().x),
                              800);
