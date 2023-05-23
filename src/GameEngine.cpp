@@ -113,6 +113,16 @@ bool GameEngine::CheckCollision(Sprite* sprite1, Sprite* sprite2)
     return sprite1->intersects(sprite2);
 }
 
+bool GameEngine::CheckCollision(Sprite* sprite, std::vector<Sprite *> sprites)
+{
+    for (Sprite* it : sprites) {
+        if (CheckCollision(sprite, it)) {
+            return (true);
+        }
+    }
+    return (false);
+}
+
 bool GameEngine::IsPlayerAboveEnemy(Sprite* godfrey, Sprite* enemySprite)
 {
     sf::FloatRect playerBounds = godfrey->get_globalBounds();
@@ -150,16 +160,13 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
     const float gravity = 3.81f;
     float deltaTimeSeconds = deltaTime.asSeconds();
     speed += gravity;
-    godfrey->Move(0, (speed + speed * deltaTimeSeconds));
 
     // Vérification des collisions avec les autres sprites
-
-    for (Sprite* it : platformes) {
-        if (CheckCollision(godfrey, it)) {
-            godfrey->Move(0, 0);
-            limitTimeJump = 0.0f;
-            break;
-        }
+    if (CheckCollision(godfrey, platformes)) {
+        godfrey->Move(0, 0);
+        limitTimeJump = 0.0f;
+    } else {
+        godfrey->Move(0, (speed + speed * deltaTimeSeconds));
     }
 
     for (Sprite* it : obstacles) {
