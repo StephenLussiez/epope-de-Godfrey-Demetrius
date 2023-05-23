@@ -1,9 +1,10 @@
 #include "headers/GameEngine.h"
 #include <iostream>
+#include <SFML/Audio.hpp>// Inclure la bibliothèque SFML Audio
 #include "headers/WindowManager.h"
-#include "SFML/Audio.hpp"  // Inclure la bibliothèque SFML Audio
 
 GameEngine::GameEngine() {}
+
 
 void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::Time& deltaTime,
                             float& parallaxOffset)
@@ -25,33 +26,43 @@ void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::
     static float jumpSpeed = 0.0f;
     static float jumpHeightRemaining = 0.0f;
     float deltaTimeSeconds = deltaTime.asSeconds();
+    float jumpAcceleration = -12.81f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && canPressLeft)
     {
         parallaxOffset = speed;
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        canPressRight = true;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && canPressRight)
     {
         parallaxOffset = -speed;
+        canPressLeft = true;
     } else
     {
         parallaxOffset = 0;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !isJumping && limitTimeJump <= 0.5f)
     {
         isJumping = true;
         jumpSpeed = 0.0f;
         jumpHeightRemaining = jumpHeight;
+        limitTimeJump += deltaTimeSeconds;
+    } else if (limitTimeJump > 1.0f && limitTimeJump < 2.0f)
+    {
+        limitTimeJump += deltaTimeSeconds;
+        isJumping = false;
+    } else if (limitTimeJump >= 2.0f)
+    {
+        limitTimeJump = 0.0f;
     }
 
     if (isJumping)
     {
-        float jumpAcceleration = -12.81f;
         jumpSpeed += jumpAcceleration;
         playerSprite->Move(0, jumpSpeed * 200 * deltaTimeSeconds);
         jumpHeightRemaining -= jumpSpeed;
 
-        if (jumpHeightRemaining >= -2.0f)
+        if (isJumping)
         {
             isJumping = false;
             jumpSpeed = 0.0f;
@@ -59,6 +70,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::
         }
     }
 }
+
 
 void GameEngine::GameDrawing(sf::RenderWindow* window, Sprite* godfrey, std::vector<Sprite*> cartes, std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies, Sprite* finishSprite,
                                 float& parallaxOffset)
@@ -101,9 +113,38 @@ bool GameEngine::CheckCollision(Sprite* sprite1, Sprite* sprite2)
     return sprite1->intersects(sprite2);
 }
 
+bool GameEngine::IsPlayerAboveEnemy(const sf::Sprite& playerSprite, const sf::Sprite& enemySprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect enemyBounds = enemySprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerBounds.top + playerBounds.height < enemyBounds.top + 5;
+}
+
+bool GameEngine::IsPlayerOnTheRight(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerSprite.getPosition().x + playerBounds.width > sprite.getPosition().x + spriteBounds.width + 5;
+}
+
+bool GameEngine::IsPlayerOnTheLeft(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+{
+    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
+    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+
+    // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
+    return playerSprite.getPosition().x + playerBounds.width < sprite.getPosition().x + 10;
+}
+
 void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time deltaTime,
     std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies,
-    Sprite* finish)
+    Sprite* finish, float& limitTimeJump,
+                             bool& canPressLeft, bool& canPressRight,
+                             float& parallaxOffset)
 {
     float speed = 0.0f;
     const float gravity = 3.81f;
@@ -112,17 +153,65 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
     godfrey->Move(0, (speed + speed * deltaTimeSeconds));
 
     // Vérification des collisions avec les autres sprites
+
     for (Sprite* it : platformes) {
         if (CheckCollision(godfrey, it)) {
             godfrey->Move(0, 0);
+            limitTimeJump = 0.0f;
             break;
         }
     }
 
     for (Sprite* it : obstacles) {
         if (CheckCollision(godfrey, it)) {
-            godfrey->Move(0, 0);
+                if (IsPlayerAboveEnemy(playerSprite, obstacle1Sprite))
+            {
+                canPressLeft = true;
+                canPressRight = true;
+            } else if (IsPlayerOnTheRight(playerSprite, obstacle1Sprite))
+            {
+                canPressLeft = false;
+            } else if (IsPlayerOnTheLeft(playerSprite, obstacle1Sprite))
+            {
+                canPressRight = false;
+            }
             break;
+        }
+    }
+
+    // Vérification de la collision avec les ennemis
+    if (CheckCollision(playerSprite, enemy1Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, enemy1Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy1Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran (penser a delete le sprite plus tard)
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+        }
+    } else if (CheckCollision(playerSprite, enemy2Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, enemy2Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy2Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+        }
+    } else if (CheckCollision(playerSprite, enemy3Sprite))
+    {
+        if (IsPlayerAboveEnemy(playerSprite, enemy3Sprite))
+        {
+            std::cout << "il est mort";
+            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+            enemy3Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
+        } else
+        {
+            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
         }
     }
 
@@ -143,7 +232,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
 Sprite* init_godfrey()
 {
     return (new Sprite("src/assets/Godfrey.png", 72, 152, sf::Vector2f{ 700, 300 }));
-}
+}   
 
 std::vector<Sprite *> init_cartes()
 {
@@ -204,7 +293,7 @@ std::vector<Sprite*> init_obstacles(std::vector<Sprite*> platformes)
     return (sprites);
 }
 
-std::vector<Sprite *> init_ennemies(std::vector<Sprite*> platformes)
+std::vector<Sprite*> init_ennemies(std::vector<Sprite*> platformes)
 {
     std::vector<Sprite*> sprites;
     Sprite* sprite;
@@ -229,9 +318,12 @@ Sprite* init_finish(std::vector<Sprite*> platformes)
 
 int GameEngine::Gameloop()
 {
-    sf::Clock clock;
+       sf::Clock clock;
     WindowManager* windowBox = new WindowManager();
     sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
+    float limitTimeJump = 0.0f;
+    bool canPressLeft = true;
+    bool canPressRight = true;
 
     // Chargement de la texture pour le personnage
     Sprite* godfrey = init_godfrey();
@@ -253,24 +345,22 @@ int GameEngine::Gameloop()
 
     float parallaxOffset = 0.0f;
 
-    // Chargement de la musique
-    sf::Music music;
-    if (!music.openFromFile("src/assets/EpicMusic.ogg")) { }
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("src/EpicMusic.ogg")) { }
 
-    // Réglages de la musique
-    music.setVolume(50); // Définir le volume (0-100)
-    music.setLoop(true); // Définir la musique en mode boucle
-
-    // Lancer la musique
-    music.play();
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.setVolume(100.0f);
+    sound.play();
 
     sf::Time deltaTime = clock.restart();
 
     while (window->isOpen())
     {
-        GameInputs(window, godfrey, deltaTime, parallaxOffset);
+        GameInputs(window, godfrey, deltaTime, limitTimeJump, canPressLeft, canPressRight, parallaxOffset);
         GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite);
         GameDrawing(window, godfrey, cartes, platformes, obstacles, ennemies, finishSprite, parallaxOffset);
+
         deltaTime = clock.restart();
     }
 
