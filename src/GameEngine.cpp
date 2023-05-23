@@ -1,8 +1,8 @@
 #include "headers/GameEngine.h"
 #include <iostream>
+#include <memory>
 #include <SFML/Audio.hpp>// Inclure la bibliothèque SFML Audio
 #include "headers/WindowManager.h"
-#include <memory>
 
 
 GameEngine::GameEngine() {}
@@ -77,11 +77,15 @@ void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* godfrey, sf::Time&
 void GameEngine::GameDrawing(sf::RenderWindow* window, Sprite* godfrey, std::vector<Sprite*> cartes,
                              std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles,
                              std::vector<Sprite*> ennemies, Sprite* finishSprite, bool& victory, Sprite* victoryScreen,
+                             bool& defeat, Sprite* defeatScreen,
                              float& parallaxOffset)
 {
     if (victory)
     {
         victoryScreen->Draw(window);
+    } else if (defeat)
+    {
+        defeatScreen->Draw(window);
     } else
     {
         // Appliquer le décalage de parallaxe aux positions des cartes
@@ -137,7 +141,7 @@ bool GameEngine::CheckCollision(Sprite* sprite, std::vector<Sprite*> sprites)
     for (Sprite* it : sprites)
     {
         if (CheckCollision(sprite, it))
-        {   
+        {
             return (true);
         }
     }
@@ -187,7 +191,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
                              std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles,
                              std::vector<Sprite*> ennemies,
                              Sprite* finish, float& limitTimeJump,
-                             bool& canPressLeft, bool& canPressRight, bool& victory,
+                             bool& canPressLeft, bool& canPressRight, bool& victory, bool& defeat,
                              float& parallaxOffset)
 {
     float speed = 0.0f;
@@ -205,19 +209,17 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
         godfrey->Move(0, (speed + speed * deltaTimeSeconds));
     }
 
-    
+
     if (spr != nullptr)
     {
         if (IsPlayerAbove(godfrey, spr))
         {
             canPressLeft = true;
             canPressRight = true;
-        }
-        else if (IsPlayerOnTheRight(godfrey, spr))
+        } else if (IsPlayerOnTheRight(godfrey, spr))
         {
             canPressLeft = false;
-        }
-        else if (IsPlayerOnTheLeft(godfrey, spr))
+        } else if (IsPlayerOnTheLeft(godfrey, spr))
         {
             canPressRight = false;
         }
@@ -236,12 +238,12 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
                 // Déplacez l'ennemi en dehors de l'écran (penser a delete le sprite plus tard)
             } else
             {
+                defeat = true;
                 // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
             }
             break;
         }
     }
-
 
     if (CheckCollision(godfrey, finish))
     {
@@ -349,6 +351,13 @@ Sprite* init_victory()
                        sf::Vector2f {750, 450}));
 }
 
+Sprite* init_defeat()
+{
+    Sprite* sprite;
+    return (new Sprite("src/assets/defeat.png", 790, 1065,
+                       sf::Vector2f {750, 450}));
+}
+
 int GameEngine::Gameloop()
 {
     sf::Clock clock;
@@ -358,6 +367,7 @@ int GameEngine::Gameloop()
     bool canPressLeft = true;
     bool canPressRight = true;
     bool victory = false;
+    bool defeat = false;
 
     // Chargement de la texture pour le personnage
     Sprite* godfrey = init_godfrey();
@@ -380,6 +390,9 @@ int GameEngine::Gameloop()
     // Chargement de l'écran de victoire 
     Sprite* victoryScreen = init_victory();
 
+    // Chargement de l'écran de défaite 
+    Sprite* defeatScreen = init_defeat();
+
     float parallaxOffset = 0.0f;
 
     sf::SoundBuffer buffer;
@@ -396,10 +409,16 @@ int GameEngine::Gameloop()
     {
         GameInputs(window, godfrey, deltaTime, limitTimeJump, canPressLeft, canPressRight, parallaxOffset);
         GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite, limitTimeJump,
-                    canPressLeft, canPressRight, victory,
+                    canPressLeft, canPressRight, victory, defeat,
                     parallaxOffset);
         GameDrawing(window, godfrey, cartes, platformes, obstacles, ennemies, finishSprite, victory, victoryScreen,
+                    defeat, defeatScreen,
                     parallaxOffset);
+
+        if (godfrey->get_position().y > window->getSize().y)
+        {
+            defeat = true;
+        }
 
         deltaTime = clock.restart();
     }
