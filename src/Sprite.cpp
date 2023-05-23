@@ -72,6 +72,11 @@ sf::Sprite Sprite::get_sprite()
 	return (m_sprite);
 }
 
+sf::FloatRect Sprite::get_globalBounds()
+{
+	return (m_sprite.getGlobalBounds());
+}
+
 Sprite::Sprite(std::string path, int width, int height)
 {
 	set_texture(path);
@@ -108,7 +113,23 @@ void Sprite::animate()
 		m_area.top = 0;
 }
 
-void Sprite::Draw(sf::RenderWindow window)
+
+void Sprite::Draw(sf::RenderWindow* window)
 {
-	window.draw(m_sprite);
+	window->draw(m_sprite);
+}
+
+void Sprite::Move(float x, float y)
+{
+	m_sprite.move(sf::Vector2f{ x, y });
+}
+
+void Sprite::Move(sf::Vector2f pos)
+{
+	m_sprite.move(pos);
+}
+
+bool Sprite::intersects(Sprite* other)
+{
+	return (this->get_globalBounds().intersects(other->get_globalBounds()));
 }
