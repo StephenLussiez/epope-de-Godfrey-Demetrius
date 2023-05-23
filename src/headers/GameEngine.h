@@ -16,12 +16,13 @@ public:
                      float& parallaxOffset);
     bool CheckCollision(Sprite* sprite1, Sprite* sprite2);
     bool CheckCollision(Sprite* sprite, std::vector<Sprite*> sprites);
+    Sprite* GetSpriteCollision(Sprite* sprite, std::vector<Sprite*> sprites);
     void GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time deltaTime,
                      std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies,
                      Sprite* finish, float& limitTimeJump, bool& canPressLeft, bool& canPressRight, bool& victory,
                      float& parallaxOffset);
 
-    bool IsPlayerAboveEnemy(Sprite* godfrey, Sprite* enemySprite);
+    bool IsPlayerAbove(Sprite* godfrey, Sprite* enemySprite);
     bool IsPlayerOnTheRight(Sprite* godfrey, Sprite* obstacle);
     bool IsPlayerOnTheLeft(Sprite* godfrey, Sprite* obstacle);
 };

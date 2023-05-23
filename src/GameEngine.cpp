@@ -2,6 +2,8 @@
 #include <iostream>
 #include <SFML/Audio.hpp>// Inclure la bibliothèque SFML Audio
 #include "headers/WindowManager.h"
+#include <memory>
+
 
 GameEngine::GameEngine() {}
 
@@ -135,14 +137,26 @@ bool GameEngine::CheckCollision(Sprite* sprite, std::vector<Sprite*> sprites)
     for (Sprite* it : sprites)
     {
         if (CheckCollision(sprite, it))
-        {
+        {   
             return (true);
         }
     }
     return (false);
 }
 
-bool GameEngine::IsPlayerAboveEnemy(Sprite* godfrey, Sprite* enemySprite)
+Sprite* GameEngine::GetSpriteCollision(Sprite* sprite, std::vector<Sprite*> sprites)
+{
+    for (Sprite* it : sprites)
+    {
+        if (CheckCollision(sprite, it))
+        {
+            return (it);
+        }
+    }
+    return (nullptr);
+}
+
+bool GameEngine::IsPlayerAbove(Sprite* godfrey, Sprite* enemySprite)
 {
     sf::FloatRect playerBounds = godfrey->get_globalBounds();
     sf::FloatRect enemyBounds = enemySprite->get_globalBounds();
@@ -180,9 +194,9 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
     const float gravity = 3.81f;
     float deltaTimeSeconds = deltaTime.asSeconds();
     speed += gravity;
-
+    Sprite* spr = GetSpriteCollision(godfrey, obstacles);
     // Vérification des collisions avec les autres sprites
-    if (CheckCollision(godfrey, platformes))
+    if (CheckCollision(godfrey, platformes) || spr != nullptr)
     {
         godfrey->Move(0, 0);
         limitTimeJump = 0.0f;
@@ -191,27 +205,21 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
         godfrey->Move(0, (speed + speed * deltaTimeSeconds));
     }
 
-    for (Sprite* it : obstacles)
+    
+    if (spr != nullptr)
     {
-        if (CheckCollision(godfrey, it))
+        if (IsPlayerAbove(godfrey, spr))
         {
-            speed = 0.0f;
-            godfrey->Move(0, 0);
-            limitTimeJump = 0.0f;
-            if (IsPlayerAboveEnemy(godfrey, it))
-            {
-                godfrey->Move(0, 0);
-                limitTimeJump = 0.0f;
-                canPressLeft = true;
-                canPressRight = true;
-            } else if (IsPlayerOnTheRight(godfrey, it))
-            {
-                canPressLeft = false;
-            } else if (IsPlayerOnTheLeft(godfrey, it))
-            {
-                canPressRight = false;
-            }
-            break;
+            canPressLeft = true;
+            canPressRight = true;
+        }
+        else if (IsPlayerOnTheRight(godfrey, spr))
+        {
+            canPressLeft = false;
+        }
+        else if (IsPlayerOnTheLeft(godfrey, spr))
+        {
+            canPressRight = false;
         }
     }
 
@@ -220,7 +228,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
     {
         if (CheckCollision(godfrey, it))
         {
-            if (IsPlayerAboveEnemy(godfrey, it))
+            if (IsPlayerAbove(godfrey, it))
             {
                 std::cout << "il est mort";
                 // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
@@ -345,7 +353,7 @@ int GameEngine::Gameloop()
 {
     sf::Clock clock;
     WindowManager* windowBox = new WindowManager();
-    sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Goldfey Dimitrius");
+    sf::RenderWindow* window = windowBox->CreateWindow(1920, 1080, "L'épopée de Godfey Dimitrius");
     float limitTimeJump = 0.0f;
     bool canPressLeft = true;
     bool canPressRight = true;
