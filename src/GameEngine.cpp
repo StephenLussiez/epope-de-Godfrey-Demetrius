@@ -6,8 +6,8 @@
 GameEngine::GameEngine() {}
 
 
-void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::Time& deltaTime,
-                            float& parallaxOffset)
+void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* godfrey, sf::Time& deltaTime, float& limitTimeJump,
+    bool& canPressLeft, bool& canPressRight, float& parallaxOffset)
 {
     sf::Event event;
 
@@ -59,7 +59,7 @@ void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* playerSprite, sf::
     if (isJumping)
     {
         jumpSpeed += jumpAcceleration;
-        playerSprite->Move(0, jumpSpeed * 200 * deltaTimeSeconds);
+        godfrey->Move(0, jumpSpeed * 200 * deltaTimeSeconds);
         jumpHeightRemaining -= jumpSpeed;
 
         if (isJumping)
@@ -113,31 +113,31 @@ bool GameEngine::CheckCollision(Sprite* sprite1, Sprite* sprite2)
     return sprite1->intersects(sprite2);
 }
 
-bool GameEngine::IsPlayerAboveEnemy(const sf::Sprite& playerSprite, const sf::Sprite& enemySprite)
+bool GameEngine::IsPlayerAboveEnemy(Sprite* godfrey, Sprite* enemySprite)
 {
-    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
-    sf::FloatRect enemyBounds = enemySprite.getGlobalBounds();
+    sf::FloatRect playerBounds = godfrey->get_globalBounds();
+    sf::FloatRect enemyBounds = enemySprite->get_globalBounds();
 
     // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
     return playerBounds.top + playerBounds.height < enemyBounds.top + 5;
 }
 
-bool GameEngine::IsPlayerOnTheRight(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+bool GameEngine::IsPlayerOnTheRight(Sprite* godfrey, Sprite* obstacle)
 {
-    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
-    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+    sf::FloatRect playerBounds = godfrey->get_globalBounds();
+    sf::FloatRect obstacleBounds = obstacle->get_globalBounds();
 
     // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
-    return playerSprite.getPosition().x + playerBounds.width > sprite.getPosition().x + spriteBounds.width + 5;
+    return godfrey->get_position().x + playerBounds.width > obstacle->get_position().x + obstacleBounds.width + 5;
 }
 
-bool GameEngine::IsPlayerOnTheLeft(const sf::Sprite& playerSprite, const sf::Sprite& sprite)
+bool GameEngine::IsPlayerOnTheLeft(Sprite* godfrey, Sprite* obstacle)
 {
-    sf::FloatRect playerBounds = playerSprite.getGlobalBounds();
-    sf::FloatRect spriteBounds = sprite.getGlobalBounds();
+    sf::FloatRect playerBounds = godfrey->get_globalBounds();
+    sf::FloatRect obstacleBounds = obstacle->get_globalBounds();
 
     // Vérifie si le bas du joueur est au-dessus du haut de l'ennemi
-    return playerSprite.getPosition().x + playerBounds.width < sprite.getPosition().x + 10;
+    return godfrey->get_position().x + playerBounds.width < obstacle->get_position().x + 10;
 }
 
 void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time deltaTime,
@@ -164,14 +164,14 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
 
     for (Sprite* it : obstacles) {
         if (CheckCollision(godfrey, it)) {
-                if (IsPlayerAboveEnemy(playerSprite, obstacle1Sprite))
+                if (IsPlayerAboveEnemy(godfrey, it))
             {
                 canPressLeft = true;
                 canPressRight = true;
-            } else if (IsPlayerOnTheRight(playerSprite, obstacle1Sprite))
+            } else if (IsPlayerOnTheRight(godfrey, it))
             {
                 canPressLeft = false;
-            } else if (IsPlayerOnTheLeft(playerSprite, obstacle1Sprite))
+            } else if (IsPlayerOnTheLeft(godfrey, it))
             {
                 canPressRight = false;
             }
@@ -180,47 +180,22 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time
     }
 
     // Vérification de la collision avec les ennemis
-    if (CheckCollision(playerSprite, enemy1Sprite))
-    {
-        if (IsPlayerAboveEnemy(playerSprite, enemy1Sprite))
-        {
-            std::cout << "il est mort";
-            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
-            enemy1Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran (penser a delete le sprite plus tard)
-        } else
-        {
-            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
-        }
-    } else if (CheckCollision(playerSprite, enemy2Sprite))
-    {
-        if (IsPlayerAboveEnemy(playerSprite, enemy2Sprite))
-        {
-            std::cout << "il est mort";
-            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
-            enemy2Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
-        } else
-        {
-            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
-        }
-    } else if (CheckCollision(playerSprite, enemy3Sprite))
-    {
-        if (IsPlayerAboveEnemy(playerSprite, enemy3Sprite))
-        {
-            std::cout << "il est mort";
-            // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
-            enemy3Sprite.setPosition(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran
-        } else
-        {
-            // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
-        }
-    }
-
     for (Sprite* it : ennemies) {
         if (CheckCollision(godfrey, it)) {
-            std::cout << "t'es mort ! t'es mort ! t'es mort !";
+            if (IsPlayerAboveEnemy(godfrey, it))
+            {
+                std::cout << "il est mort";
+                // Le joueur a sauté au-dessus de l'ennemi, supprimez enemy1Sprite
+                it->set_position(-1000, -1000); // Déplacez l'ennemi en dehors de l'écran (penser a delete le sprite plus tard)
+            }
+            else
+            {
+                // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
+            }
             break;
         }
     }
+
 
     if (CheckCollision(godfrey, finish))
     {
@@ -358,7 +333,8 @@ int GameEngine::Gameloop()
     while (window->isOpen())
     {
         GameInputs(window, godfrey, deltaTime, limitTimeJump, canPressLeft, canPressRight, parallaxOffset);
-        GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite);
+        GamePhysics(window, godfrey, deltaTime, platformes, obstacles, ennemies, finishSprite, limitTimeJump, canPressLeft, canPressRight,
+            parallaxOffset);
         GameDrawing(window, godfrey, cartes, platformes, obstacles, ennemies, finishSprite, parallaxOffset);
 
         deltaTime = clock.restart();

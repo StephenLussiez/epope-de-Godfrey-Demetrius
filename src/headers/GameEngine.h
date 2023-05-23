@@ -15,10 +15,10 @@ public:
     bool CheckCollision(Sprite* sprite1, Sprite* sprite2);
     void GamePhysics(sf::RenderWindow* window, Sprite* godfrey, sf::Time deltaTime,
                      std::vector<Sprite *> platformes, std::vector<Sprite*> obstacles, std::vector<Sprite*> ennemies,
-                     Sprite* finish, loat& limitTimeJump, bool& canPressLeft, bool& canPressRight,
+                     Sprite* finish, float& limitTimeJump, bool& canPressLeft, bool& canPressRight,
                      float& parallaxOffset);
 
-    bool IsPlayerAboveEnemy(const sf::Sprite& playerSprite, const sf::Sprite& enemySprite);
-    bool IsPlayerOnTheRight(const sf::Sprite& playerSprite, const sf::Sprite& sprite);
-    bool IsPlayerOnTheLeft(const sf::Sprite& playerSprite, const sf::Sprite& sprite);
+    bool IsPlayerAboveEnemy(Sprite* godfrey, Sprite* enemySprite);
+    bool IsPlayerOnTheRight(Sprite* godfrey, Sprite* obstacle);
+    bool IsPlayerOnTheLeft(Sprite* godfrey, Sprite* obstacle);
 };
