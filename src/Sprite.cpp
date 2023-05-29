@@ -113,7 +113,6 @@ void Sprite::animate()
 		m_area.top = 0;
 }
 
-
 void Sprite::Draw(sf::RenderWindow* window)
 {
 	window->draw(m_sprite);
