@@ -4,12 +4,10 @@
 #include <SFML/Audio.hpp>  // Inclure la bibliothèque SFML Audio
 #include "headers/WindowManager.h"
 
-GameEngine::GameEngine() {
-    
-}
+GameEngine::GameEngine() {}
 
 
-void GameEngine::GameInputs(sf::RenderWindow* window)
+void GameEngine::GameInputs(sf::RenderWindow* window, Sprite* godfrey)
 {
     sf::Event event;
 
@@ -21,55 +19,34 @@ void GameEngine::GameInputs(sf::RenderWindow* window)
         }
     }
 
-    switch (event.KeyPressed) {
-    case sf::Keyboard::Q:
-        GodfreyAction = MoveLeft;
-        break;
-    case sf::Keyboard::D:
-        GodfreyAction = MoveRight;
-        break;
-    case sf::Keyboard::Space:
-        GodfreyAction = Jump;
-        break;
+    // Inputs de déplacements
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+        m_godfreyAction = MoveLeft;
     }
-}
-
-void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vector<Sprite*> cartes,
-    std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles,
-    std::vector<Sprite*> ennemies,
-    Sprite* finishSprite)
-{
-    if (GodfreyAction == MoveLeft && m_canPressLeft)
-    {
-        m_parallaxOffset = m_speed;
-        m_canPressRight = true;
-    } else if (GodfreyAction == MoveRight && m_canPressRight)
-    {
-        m_parallaxOffset = -m_speed;
-        m_canPressLeft = true;
-    } else
-    {
-        m_parallaxOffset = 0;
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        m_godfreyAction = MoveRight;
+    } 
+    else {
+        m_godfreyAction = None;
     }
 
-    if (GodfreyAction == Jump && !m_isJumping && m_limitTimeJump <= 0.5f)
+    // Input de saut
+    m_deltaTimeSeconds = m_deltaTime.asSeconds();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_isJumping && m_limitTimeJump <= 0.5f)
     {
         m_isJumping = true;
         m_jumpSpeed = 0.0f;
         m_jumpHeightRemaining = m_jumpHeight;
         m_limitTimeJump += m_deltaTimeSeconds;
-    } else if (m_limitTimeJump > 1.0f && m_limitTimeJump < 2.0f)
+    }
+    else if (m_limitTimeJump > 1.0f && m_limitTimeJump < 2.0f)
     {
         m_limitTimeJump += m_deltaTimeSeconds;
         m_isJumping = false;
-    } else if (m_limitTimeJump >= 2.0f)
+    }
+    else if (m_limitTimeJump >= 2.0f)
     {
         m_limitTimeJump = 0.0f;
-    }
-
-    if (godfrey->get_position().y > window->getSize().y)
-    {
-        m_state = Defeat;
     }
 
     if (m_isJumping)
@@ -85,20 +62,44 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vec
             m_jumpHeightRemaining = 0.0f;
         }
     }
+}
 
+void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vector<Sprite*> cartes,
+    std::vector<Sprite*> platformes, std::vector<Sprite*> obstacles,
+    std::vector<Sprite*> ennemies,
+    Sprite* finishSprite)
+{
+    float deltaTime = m_clock.getElapsedTime().asSeconds();
+    std::cout << deltaTime << std::endl;
+
+    // Mouvement du personnage/carte (parallax)
+    if (m_godfreyAction == MoveLeft && m_canPressLeft)
+    {
+        m_parallaxOffset = m_speed;
+        m_canPressRight = true;
+    } else if (m_godfreyAction == MoveRight && m_canPressRight)
+    {
+        m_parallaxOffset = -m_speed;
+        m_canPressLeft = true;
+    } else
+    {
+        m_parallaxOffset = 0;
+    }
+
+    //Vérification des collisions avec les autres sprites
     Sprite* spr = GetSpriteCollision(godfrey, obstacles);
 
-    // Vérification des collisions avec les autres sprites
     if (CheckCollision(godfrey, platformes) || spr != nullptr)
     {
         godfrey->Move(0, 0);
         m_limitTimeJump = 0.0f;
+        m_allowJump = true;
+        m_limitTimeJump = 0.0f;
     }
     else
     {
-        godfrey->Move(0, (m_speed + m_speed * m_deltaTimeSeconds));
+        godfrey->Move(0, (m_speed + m_speed * deltaTime));
     }
-
 
     if (spr != nullptr)
     {
@@ -106,6 +107,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vec
         {
             m_canPressLeft = true;
             m_canPressRight = true;
+            m_allowJump = true;
         }
         else if (IsPlayerOnTheRight(godfrey, spr))
         {
@@ -129,8 +131,7 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vec
                 it->set_position(-1000, -1000);
                 // Déplacez l'ennemi en dehors de l'écran (penser a delete le sprite plus tard)
             }
-            else
-            {
+            else {
                 m_state = Defeat;
                 // Le joueur est entré en collision avec un ennemi, faites quelque chose (par exemple, affichez un message ou réinitialisez le niveau)
             }
@@ -138,12 +139,19 @@ void GameEngine::GamePhysics(sf::RenderWindow* window, Sprite* godfrey, std::vec
         }
     }
 
+    //Condition de défaite
+    if (godfrey->get_position().y > window->getSize().y)
+    {
+        m_state = Defeat;
+    }
+    // Vérification de la collision avec la ligne d'arrivée
     if (CheckCollision(godfrey, finishSprite))
     {
         m_state = Victory;
         godfrey->Move(0, 0);
     }
 
+    // Update des déplacements
     for (Sprite* it : cartes)
     {
         it->Move((m_parallaxOffset * 0.05f), 0);
@@ -303,13 +311,13 @@ int GameEngine::Gameloop()
     sound.play();
 
     
-
+    m_deltaTime = m_clock.restart();
     while (window->isOpen())
     {
-        GameInputs(window);
-        GamePhysics(window, godfrey, platformes, cartes, obstacles, ennemies, finishSprite);
+        GameInputs(window, godfrey);
+        GamePhysics(window, godfrey,cartes, platformes, obstacles, ennemies, finishSprite);
         GameDrawing(window, godfrey, cartes, platformes, obstacles, ennemies, finishSprite, victoryScreen, defeatScreen);
-        m_clock.restart();
+        m_deltaTime = m_clock.restart();
     }
 
     return 0;

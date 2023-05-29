@@ -6,6 +6,7 @@ void GameEngine::InitParameters()
 {
     m_speed = 11.7f;
     m_jumpHeight = -2.0f;
+    m_allowJump = false;
     m_isJumping = false;
     m_jumpSpeed = 0.0f;
     m_jumpHeightRemaining = 0.0f;
@@ -14,9 +15,10 @@ void GameEngine::InitParameters()
     m_limitTimeJump = 0.0f;
     m_canPressLeft = true;
     m_canPressRight = true;
+    m_parallaxOffset = 0.0f;
+    m_godfreyAction = None;
     m_state = Playing;
     m_clock.restart();
-    m_parallaxOffset = 0.0f;
 }
 
 Sprite* GameEngine::init_godfrey()
