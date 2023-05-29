@@ -31,7 +31,7 @@ set(SOURCES
     src/Button.cpp
     src/Rectangle.cpp
     src/Menu.cpp
-
+    src/InitGame.cpp
 )
 
 # Add header files
@@ -47,7 +47,6 @@ set(HEADERS
     src/headers/Button.h
     src/headers/Rectangle.h
     src/headers/Menu.h
-
 )
 
 # Add executable target

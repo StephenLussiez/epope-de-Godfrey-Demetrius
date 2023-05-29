@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics/Sprite.hpp>;
 #include <SFML/Graphics/Texture.hpp>;
 #include <SFML/System/Vector2.hpp>;
@@ -10,7 +12,6 @@ class Sprite
 {
 private:
 	sf::Sprite m_sprite;
-
 	sf::Texture m_texture;
 	sf::Vector2f m_size;
 
